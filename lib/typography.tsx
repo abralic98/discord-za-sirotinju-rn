@@ -1,0 +1,28 @@
+import { PropsWithChildren } from "react";
+import { Text } from "react-native";
+import { cn } from "./utils";
+
+export const TextSm = ({ children, className }: PropsWithChildren & {className?: string}) => {
+  return <Text className={cn("text-white text-sm", className)}>{children}</Text>;
+};
+
+export const TextMd = ({ children, className }: PropsWithChildren & {className?: string}) => {
+  return <Text className={cn("text-white text-md", className)}>{children}</Text>;
+};
+
+export const TextLg = ({ children, className }: PropsWithChildren & {className?: string}) => {
+  return <Text className={cn("text-white text-lg", className)}>{children}</Text>;
+};
+
+export const TextXl = ({ children, className }: PropsWithChildren & {className?: string}) => {
+  return <Text className={cn("text-white text-xl", className)}>{children}</Text>;
+};
+
+export const TextXl2 = ({ children, className }: PropsWithChildren & {className?: string}) => {
+  return <Text className={cn("text-white text-2xl", className)}>{children}</Text>;
+};
+
+export const TextXl3 = ({ children, className }: PropsWithChildren & {className?: string}) => {
+  return <Text className={cn("text-white text-3xl", className)}>{children}</Text>;
+};
+

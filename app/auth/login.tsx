@@ -1,14 +1,29 @@
-import { cn } from "@/lib/utils";
+import EZLogoDark from "@/assets/logo/EZLogoDark";
+import Center from "@/components/Center";
+import ParallaxScrollView from "@/components/ParallaxScrollView";
+import { LoginForm } from "@/features/auth/LoginForm";
+import { TextLg, TextXl, TextXl3 } from "@/lib/typography";
 import React from "react";
 import { Text, View } from "react-native";
 
 export default function Login() {
-  const kita = false
   return (
-    <View>
-      <Text className="bg-blue-500">
-        Edit kita app/index.tsx to edit this screen.
-      </Text>
-    </View>
+    <ParallaxScrollView
+      headerBackgroundColor={"gray"}
+      headerImage={<EzComms />}
+    >
+      <Center>
+        <LoginForm />
+      </Center>
+    </ParallaxScrollView>
   );
 }
+
+const EzComms = () => {
+  return (
+    <Center>
+      <TextXl3 className="font-bold">EZComms</TextXl3>
+      <EZLogoDark />
+    </Center>
+  );
+};

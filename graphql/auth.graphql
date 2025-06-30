@@ -1,0 +1,32 @@
+mutation CreateSession($credentials: CreateSessionInput!) {
+  createSession(credentials: $credentials) {
+    token
+    user {
+      id
+      username
+      email
+      avatar
+      userPresence
+      dateCreated
+    }
+  }
+}
+
+mutation CreateUser($user: CreateUserInput!) {
+  createUser(user: $user) {
+    id
+  }
+}
+
+mutation UpdateUser($user: UpdateUserInput) {
+  updateUser(user: $user) {
+    id
+  }
+}
+
+mutation UpdateUserPassword($credentials: UpdateUserPasswordInput) {
+  updateUserPassword(credentials: $credentials) {
+    id
+  }
+}
+
