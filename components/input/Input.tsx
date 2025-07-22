@@ -24,8 +24,8 @@ const Input = React.forwardRef<TextInput, RNInputProps>(
           editable={editable}
           placeholderTextColor="#9ca3af"
           className={cn(
-            "h-12 w-full rounded-md border border-input bg-background px-3 pr-10 text-base text-foreground",
-            "placeholder:text-muted-foreground",
+            "h-12 w-full rounded-md border border-input bg-dark-input pl-3 pr-10 text-base text-white",
+            "placeholder:text-gray",
             !editable && "opacity-50",
             className,
           )}
@@ -47,9 +47,9 @@ const Input = React.forwardRef<TextInput, RNInputProps>(
             className="absolute right-3 top-1/2 -translate-y-1/2"
           >
             {secured ? (
-              <EyeIcon size={20} className="text-muted-foreground" />
+              <EyeIcon size={20} className="text-white" />
             ) : (
-              <EyeOffIcon size={20} className="text-muted-foreground" />
+              <EyeOffIcon size={20} className="text-white" />
             )}
           </Pressable>
         )}
