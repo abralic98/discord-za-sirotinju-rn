@@ -12,9 +12,9 @@ export default function Login() {
       headerBackgroundColor={"gray"}
       headerImage={<EzComms />}
     >
-      <Center>
+      <View>
         <LoginForm />
-      </Center>
+      </View>
     </ParallaxScrollView>
   );
 }
