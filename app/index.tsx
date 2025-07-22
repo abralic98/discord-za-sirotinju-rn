@@ -1,12 +1,9 @@
+import { getFromStorage } from "@/lib/keys/storage";
+import { StorageKeys } from "@/lib/keys/storageKeys";
 import routes from "@/lib/routes";
-import { useRouter } from "expo-router";
-import { Button, Text, View } from "react-native";
+import { Redirect } from "expo-router";
 
 export default function Index() {
-  const { push } = useRouter();
-  return (
-    <View>
-      <Button title="kita" onPress={() => push(routes.login)} />
-    </View>
-  );
+  const token = getFromStorage(StorageKeys.TOKEN);
+  return <Redirect href={token !== null ? routes.dashboard : routes.login} />;
 }
