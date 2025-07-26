@@ -1,4 +1,4 @@
-import { useMutation, UseMutationOptions } from '@tanstack/react-query';
+import { useMutation, useQuery, UseMutationOptions, UseQueryOptions } from '@tanstack/react-query';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -521,6 +521,11 @@ export type UpdateUserPasswordMutationVariables = Exact<{
 
 export type UpdateUserPasswordMutation = { __typename?: 'Mutation', updateUserPassword?: { __typename?: 'User', id?: string | null } | null };
 
+export type MeQueryQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MeQueryQuery = { __typename?: 'Query', meQuery?: { __typename?: 'User', id?: string | null, username?: string | null, description?: string | null, email?: string | null, dateCreated?: string | null, avatar?: string | null, phoneNumber?: any | null, userPresence?: UserPresenceType | null } | null };
+
 
 
 export const CreateSessionDocument = `
@@ -616,5 +621,35 @@ export const useUpdateUserPasswordMutation = <
     return useMutation<UpdateUserPasswordMutation, TError, UpdateUserPasswordMutationVariables, TContext>(
       ['UpdateUserPassword'],
       (variables?: UpdateUserPasswordMutationVariables) => fetcher<UpdateUserPasswordMutation, UpdateUserPasswordMutationVariables>(dataSource.endpoint, dataSource.fetchParams || {}, UpdateUserPasswordDocument, variables)(),
+      options
+    )};
+
+export const MeQueryDocument = `
+    query meQuery {
+  meQuery {
+    id
+    username
+    description
+    email
+    dateCreated
+    avatar
+    phoneNumber
+    userPresence
+  }
+}
+    `;
+
+export const useMeQueryQuery = <
+      TData = MeQueryQuery,
+      TError = unknown
+    >(
+      dataSource: { endpoint: string, fetchParams?: RequestInit },
+      variables?: MeQueryQueryVariables,
+      options?: UseQueryOptions<MeQueryQuery, TError, TData>
+    ) => {
+    
+    return useQuery<MeQueryQuery, TError, TData>(
+      variables === undefined ? ['meQuery'] : ['meQuery', variables],
+      fetcher<MeQueryQuery, MeQueryQueryVariables>(dataSource.endpoint, dataSource.fetchParams || {}, MeQueryDocument, variables),
       options
     )};

@@ -9,10 +9,10 @@ import {
 } from "@/generated/graphql";
 import { handleGraphqlError } from "@/helpers/GraphqlCatchError";
 import { showSuccess } from "@/helpers/Toast";
-import { client } from "@/lib/graphql/client";
-import { saveToStorage } from "@/lib/keys/storage";
-import { StorageKeys } from "@/lib/keys/storageKeys";
+import { publicClient } from "@/lib/graphql/client";
 import routes from "@/lib/routes";
+import { saveToStorage } from "@/lib/secure-storage/storage";
+import { StorageKeys } from "@/lib/secure-storage/storageKeys";
 import { TextSm } from "@/lib/typography";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
@@ -27,7 +27,7 @@ export const LoginForm = () => {
   const createSessionMutation = useMutation({
     mutationFn: async (data: CreateSessionInput) => {
       const modifiedData: MutationCreateSessionArgs = { credentials: data };
-      return client.request<CreateSessionMutation>(
+      return publicClient.request<CreateSessionMutation>(
         CreateSessionDocument,
         modifiedData,
       );
@@ -35,6 +35,7 @@ export const LoginForm = () => {
     onSuccess: (res) => {
       if (res.createSession?.token && res.createSession.user) {
         saveToStorage(StorageKeys.TOKEN, res.createSession.token);
+        console.log(res.createSession.token);
         showSuccess({ title: "Login" });
         replace(routes.dashboard);
       }

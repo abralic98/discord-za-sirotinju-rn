@@ -1,22 +1,21 @@
 import { GraphQLClient } from "graphql-request";
-import { getFromStorage } from "../keys/storage";
-import { StorageKeys } from "../keys/storageKeys";
 import { GraphqlCatchError } from "@/helpers/GraphqlCatchError";
+import { getFromStorage } from "../secure-storage/storage";
+import { StorageKeys } from "../secure-storage/storageKeys";
 
-// export const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? "undefined";
 export const apiUrl = "http://localhost:8080/graphql";
-
-export const client = new GraphQLClient(apiUrl, {
-  headers: () => ({
-    Authorization: `Bearer ${getFromStorage(StorageKeys.TOKEN) || ""}`,
-  }),
-});
 
 export const requestWithAuth = async <T>(
   query: string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   variables?: Record<string, any>,
 ): Promise<T> => {
+  const token = await getFromStorage(StorageKeys.TOKEN);
+  const client = new GraphQLClient(apiUrl, {
+    headers: {
+      Authorization: `Bearer ${token ?? ""}`,
+    },
+  });
+
   try {
     return await client.request<T>(query, variables);
   } catch (error) {
@@ -37,3 +36,5 @@ export const requestWithAuth = async <T>(
     throw error;
   }
 };
+
+export const publicClient = new GraphQLClient(apiUrl, {});

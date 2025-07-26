@@ -1,9 +1,28 @@
-import { getFromStorage } from "@/lib/keys/storage";
-import { StorageKeys } from "@/lib/keys/storageKeys";
+import { useEffect, useState } from "react";
+import { useAuth } from "@/features/auth/hooks/useAuth";
+import CustomSplash from "@/components/CustomSplash";
 import routes from "@/lib/routes";
-import { Redirect } from "expo-router";
+import { Redirect, useRouter } from "expo-router";
 
 export default function Index() {
-  const token = getFromStorage(StorageKeys.TOKEN);
-  return <Redirect href={token !== null ? routes.dashboard : routes.login} />;
+  const { isAuthorized, isLoading } = useAuth();
+  const [showSplash, setShowSplash] = useState(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoading) {
+      const timeout = setTimeout(() => {
+        setShowSplash(false);
+        router.replace(isAuthorized ? routes.dashboard : routes.login);
+      }, 1000);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [isLoading]);
+
+  if (showSplash || isLoading) {
+    return <CustomSplash />;
+  }
+
+  return null;
 }

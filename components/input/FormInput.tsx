@@ -41,6 +41,7 @@ export const FormInput = <T extends FieldValues>({
             onChangeText={onChange}
             onBlur={onBlur}
             secure={secure}
+            autoCapitalize="none"
             icon={icon}
             className={cn("border", error && "border-destructive", className)}
             {...rest}

@@ -4514,7 +4514,7 @@ expo-secure-store@^14.2.3:
   resolved "https://registry.yarnpkg.com/expo-secure-store/-/expo-secure-store-14.2.3.tgz#8e74da512e671cec5f7b88679def3d54b59cd49d"
   integrity sha512-hYBbaAD70asKTFd/eZBKVu+9RTo9OSTMMLqXtzDF8ndUGjpc6tmRCoZtrMHlUo7qLtwL5jm+vpYVBWI8hxh/1Q==
 
-expo-splash-screen@~0.30.10:
+expo-splash-screen@^0.30.10:
   version "0.30.10"
   resolved "https://registry.yarnpkg.com/expo-splash-screen/-/expo-splash-screen-0.30.10.tgz#d249d350f867b6513fa34a9c4cf6545260ab5208"
   integrity sha512-Tt9va/sLENQDQYeOQ6cdLdGvTZ644KR3YG9aRlnpcs2/beYjOX1LHT510EGzVN9ljUTg+1ebEo5GGt2arYtPjw==
@@ -6111,11 +6111,6 @@ lucide-react-native@0.511.0:
   version "0.511.0"
   resolved "https://registry.npmjs.org/lucide-react-native/-/lucide-react-native-0.511.0.tgz"
   integrity sha512-brCrakogilGx3inT0em8HUU11dsxyu62+P6sjqU7WKgkfcIc8Q0Ya3zDcBQ8EG3c1HsCSvgFT5tWLetVFAsqhQ==
-
-lucide-react-native@^0.525.0:
-  version "0.525.0"
-  resolved "https://registry.npmjs.org/lucide-react-native/-/lucide-react-native-0.525.0.tgz"
-  integrity sha512-f9iIdoZJCDIXhzAMQCNgaiWdiq42ls5ieXvVXwlNHN1q7c5zC1n1U0yOVu6J0oNSF8zvYqY3pK3UPOX+T2YpIQ==
 
 lucide-react@0.511.0:
   version "0.511.0"

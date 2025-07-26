@@ -30,3 +30,15 @@ mutation UpdateUserPassword($credentials: UpdateUserPasswordInput) {
   }
 }
 
+query meQuery {
+  meQuery {
+    id
+    username
+    description
+    email
+    dateCreated
+    avatar
+    phoneNumber
+    userPresence
+  }
+}

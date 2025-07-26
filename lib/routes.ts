@@ -1,11 +1,12 @@
 const auth = "/auth" as const;
+const tabs = "/(tabs)" as const;
 const settings = "/settings" as const;
 
 const routes = {
   home: "/" as const,
   login: `${auth}/login` as const,
   register: `${auth}/register` as const,
-  dashboard: "/dashboard" as const,
+  dashboard: `${tabs}/dashboard` as const,
   profile: "/profile" as const,
   settings: settings,
   notifications: `${settings}/notifications` as const,
