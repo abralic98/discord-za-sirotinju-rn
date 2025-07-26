@@ -526,6 +526,11 @@ export type MeQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type MeQueryQuery = { __typename?: 'Query', meQuery?: { __typename?: 'User', id?: string | null, username?: string | null, description?: string | null, email?: string | null, dateCreated?: string | null, avatar?: string | null, phoneNumber?: any | null, userPresence?: UserPresenceType | null } | null };
 
+export type GetAllUserServersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllUserServersQuery = { __typename?: 'Query', getAllUserServers?: Array<{ __typename?: 'Server', id?: string | null, name?: string | null, serverImg?: string | null } | null> | null };
+
 
 
 export const CreateSessionDocument = `
@@ -651,5 +656,30 @@ export const useMeQueryQuery = <
     return useQuery<MeQueryQuery, TError, TData>(
       variables === undefined ? ['meQuery'] : ['meQuery', variables],
       fetcher<MeQueryQuery, MeQueryQueryVariables>(dataSource.endpoint, dataSource.fetchParams || {}, MeQueryDocument, variables),
+      options
+    )};
+
+export const GetAllUserServersDocument = `
+    query getAllUserServers {
+  getAllUserServers {
+    id
+    name
+    serverImg
+  }
+}
+    `;
+
+export const useGetAllUserServersQuery = <
+      TData = GetAllUserServersQuery,
+      TError = unknown
+    >(
+      dataSource: { endpoint: string, fetchParams?: RequestInit },
+      variables?: GetAllUserServersQueryVariables,
+      options?: UseQueryOptions<GetAllUserServersQuery, TError, TData>
+    ) => {
+    
+    return useQuery<GetAllUserServersQuery, TError, TData>(
+      variables === undefined ? ['getAllUserServers'] : ['getAllUserServers', variables],
+      fetcher<GetAllUserServersQuery, GetAllUserServersQueryVariables>(dataSource.endpoint, dataSource.fetchParams || {}, GetAllUserServersDocument, variables),
       options
     )};

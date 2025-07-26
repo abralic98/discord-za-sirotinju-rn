@@ -1,0 +1,7 @@
+query getAllUserServers {
+  getAllUserServers {
+    id
+    name
+    serverImg
+  }
+}
