@@ -1,3 +1,4 @@
+import { useAuthStore } from "@/features/auth/store";
 import { cn } from "@/lib/utils";
 import { Tabs } from "expo-router";
 import {
@@ -7,6 +8,8 @@ import {
 } from "lucide-nativewind";
 
 export default function TabLayout() {
+  const { user } = useAuthStore();
+  console.log(user, "user");
   const getColorClass = (color: string) => {
     switch (color) {
       case "white":

@@ -9,3 +9,7 @@ export const getFromStorage = async (key: StorageKeys) => {
   let result = await SecureStore.getItemAsync(key);
   return result;
 };
+
+export const deleteFromStorage = async (key: StorageKeys) => {
+  await SecureStore.deleteItemAsync(key);
+};

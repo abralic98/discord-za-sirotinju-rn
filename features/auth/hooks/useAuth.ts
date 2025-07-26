@@ -33,5 +33,6 @@ export const useAuth = () => {
     token,
     isLoading: loadingToken || (Boolean(token) && query.isLoading),
     refetch: query.refetch,
+    user: query.data,
   };
 };

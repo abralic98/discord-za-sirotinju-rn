@@ -19,10 +19,12 @@ import { useRouter } from "expo-router";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { View } from "react-native";
+import { useAuthStore } from "./store";
 
 export const LoginForm = () => {
   const form = useForm<CreateSessionInput>();
   const { replace } = useRouter();
+  const { setAuth } = useAuthStore();
 
   const createSessionMutation = useMutation({
     mutationFn: async (data: CreateSessionInput) => {
@@ -34,8 +36,7 @@ export const LoginForm = () => {
     },
     onSuccess: (res) => {
       if (res.createSession?.token && res.createSession.user) {
-        saveToStorage(StorageKeys.TOKEN, res.createSession.token);
-        console.log(res.createSession.token);
+        setAuth(res.createSession.token, res.createSession.user);
         showSuccess({ title: "Login" });
         replace(routes.dashboard);
       }
