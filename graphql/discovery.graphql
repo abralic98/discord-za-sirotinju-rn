@@ -1,0 +1,19 @@
+query getAllServers($page: Int!, $size: Int!, $search: String) {
+  getAllServers(page: $page, size: $size, search: $search) {
+    totalPages
+    totalElements
+    number
+    size
+    content {
+      id
+      name
+      description
+      banner
+      serverImg
+      joinedUsers {
+        id
+        userPresence
+      }
+    }
+  }
+}

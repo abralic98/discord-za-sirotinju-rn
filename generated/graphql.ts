@@ -538,6 +538,15 @@ export type GetRoomsByServerIdQueryVariables = Exact<{
 
 export type GetRoomsByServerIdQuery = { __typename?: 'Query', getRoomsByServerId?: { __typename?: 'Rooms', text?: Array<{ __typename?: 'Room', id: string, name: string, maxLimit?: number | null } | null> | null, voice?: Array<{ __typename?: 'Room', id: string, name: string, maxLimit?: number | null } | null> | null } | null };
 
+export type GetAllServersQueryVariables = Exact<{
+  page: Scalars['Int']['input'];
+  size: Scalars['Int']['input'];
+  search?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type GetAllServersQuery = { __typename?: 'Query', getAllServers: { __typename?: 'ServerPage', totalPages: number, totalElements: number, number: number, size: number, content: Array<{ __typename?: 'Server', id?: string | null, name?: string | null, description?: string | null, banner?: string | null, serverImg?: string | null, joinedUsers?: Array<{ __typename?: 'User', id?: string | null, userPresence?: UserPresenceType | null } | null> | null }> } };
+
 
 
 export const CreateSessionDocument = `
@@ -720,5 +729,42 @@ export const useGetRoomsByServerIdQuery = <
     return useQuery<GetRoomsByServerIdQuery, TError, TData>(
       ['getRoomsByServerId', variables],
       fetcher<GetRoomsByServerIdQuery, GetRoomsByServerIdQueryVariables>(dataSource.endpoint, dataSource.fetchParams || {}, GetRoomsByServerIdDocument, variables),
+      options
+    )};
+
+export const GetAllServersDocument = `
+    query getAllServers($page: Int!, $size: Int!, $search: String) {
+  getAllServers(page: $page, size: $size, search: $search) {
+    totalPages
+    totalElements
+    number
+    size
+    content {
+      id
+      name
+      description
+      banner
+      serverImg
+      joinedUsers {
+        id
+        userPresence
+      }
+    }
+  }
+}
+    `;
+
+export const useGetAllServersQuery = <
+      TData = GetAllServersQuery,
+      TError = unknown
+    >(
+      dataSource: { endpoint: string, fetchParams?: RequestInit },
+      variables: GetAllServersQueryVariables,
+      options?: UseQueryOptions<GetAllServersQuery, TError, TData>
+    ) => {
+    
+    return useQuery<GetAllServersQuery, TError, TData>(
+      ['getAllServers', variables],
+      fetcher<GetAllServersQuery, GetAllServersQueryVariables>(dataSource.endpoint, dataSource.fetchParams || {}, GetAllServersDocument, variables),
       options
     )};

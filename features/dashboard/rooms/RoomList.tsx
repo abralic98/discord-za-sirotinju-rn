@@ -9,8 +9,7 @@ import {
 } from "@/generated/graphql";
 import { requestWithAuth } from "@/lib/graphql/client";
 import { handleGraphqlError } from "@/helpers/GraphqlCatchError";
-import { TextLg, TextMd, TextXl, TextXl3 } from "@/lib/typography";
-import { FlashList } from "@shopify/flash-list";
+import { TextLg, TextMd, TextXl3 } from "@/lib/typography";
 import { SingleRoom } from "./SingleRoom";
 import { SingleVoiceRoom } from "./SingleVoiceRoom";
 
@@ -51,21 +50,21 @@ export const RoomList = () => {
   }
 
   return (
-    <View className="w-full pl-3 pt-3 bg-dark-server flex flex-col gap-4">
+    <View className="flex-1 h-full px-3 pt-3 bg-dark-server flex flex-col gap-4">
       <TextXl3 className="font-bold">{activeServer.name}</TextXl3>
       <ScrollView>
         <TextLg>Text channels</TextLg>
         <View className="h-4" />
         <View className="flex flex-col gap-4 pb-4">
           {data?.text?.map((room) => {
-            return <SingleRoom room={room} />;
+            return <SingleRoom key={room?.id} room={room} />;
           })}
         </View>
         <TextLg>Voice channels</TextLg>
         <View className="h-4" />
         <View className="flex flex-col gap-4">
           {data?.voice?.map((room) => {
-            return <SingleVoiceRoom room={room} />;
+            return <SingleVoiceRoom key={room?.id} room={room} />;
           })}
         </View>
       </ScrollView>

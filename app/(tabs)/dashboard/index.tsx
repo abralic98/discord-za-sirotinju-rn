@@ -5,8 +5,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function DashboardPage() {
   return (
-    <SafeAreaView edges={["top"]}>
-      <View className="flex flex-row h-full">
+    <SafeAreaView edges={["top"]} className="bg-dark-server-sidebar">
+      <View className="w-full flex flex-row h-full">
         <ServerListSidebar />
         <RoomList />
       </View>

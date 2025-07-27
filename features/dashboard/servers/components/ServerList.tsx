@@ -9,7 +9,6 @@ import { handleGraphqlError } from "@/helpers/GraphqlCatchError";
 import { requestWithAuth } from "@/lib/graphql/client";
 import { queryKeys } from "@/lib/react-query/queryKeys";
 import { useQuery } from "@tanstack/react-query";
-import { TextMd } from "@/lib/typography";
 import { SingleServer } from "../SingleServer";
 
 export const ServerList = () => {

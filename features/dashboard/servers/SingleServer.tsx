@@ -10,7 +10,7 @@ export const SingleServer = ({ server }: { server: Server | null }) => {
   if (!server) return null;
 
   const renderIcon = () => {
-    if (server?.serverImg === "kita") {
+    if (server?.serverImg) {
       return (
         <Image
           alt="server icon"
