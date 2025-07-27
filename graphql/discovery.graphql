@@ -17,3 +17,11 @@ query getAllServers($page: Int!, $size: Int!, $search: String) {
     }
   }
 }
+
+mutation joinServer($input: JoinServerInput) {
+  joinServer(input: $input) {
+    id
+    serverImg
+    name
+  }
+}

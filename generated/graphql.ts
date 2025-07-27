@@ -538,6 +538,13 @@ export type GetRoomsByServerIdQueryVariables = Exact<{
 
 export type GetRoomsByServerIdQuery = { __typename?: 'Query', getRoomsByServerId?: { __typename?: 'Rooms', text?: Array<{ __typename?: 'Room', id: string, name: string, maxLimit?: number | null } | null> | null, voice?: Array<{ __typename?: 'Room', id: string, name: string, maxLimit?: number | null } | null> | null } | null };
 
+export type CreateRoomMutationVariables = Exact<{
+  room?: InputMaybe<CreateRoomInput>;
+}>;
+
+
+export type CreateRoomMutation = { __typename?: 'Mutation', createRoom?: { __typename?: 'Room', id: string } | null };
+
 export type GetAllServersQueryVariables = Exact<{
   page: Scalars['Int']['input'];
   size: Scalars['Int']['input'];
@@ -546,6 +553,13 @@ export type GetAllServersQueryVariables = Exact<{
 
 
 export type GetAllServersQuery = { __typename?: 'Query', getAllServers: { __typename?: 'ServerPage', totalPages: number, totalElements: number, number: number, size: number, content: Array<{ __typename?: 'Server', id?: string | null, name?: string | null, description?: string | null, banner?: string | null, serverImg?: string | null, joinedUsers?: Array<{ __typename?: 'User', id?: string | null, userPresence?: UserPresenceType | null } | null> | null }> } };
+
+export type JoinServerMutationVariables = Exact<{
+  input?: InputMaybe<JoinServerInput>;
+}>;
+
+
+export type JoinServerMutation = { __typename?: 'Mutation', joinServer?: { __typename?: 'Server', id?: string | null, serverImg?: string | null, name?: string | null } | null };
 
 
 
@@ -732,6 +746,28 @@ export const useGetRoomsByServerIdQuery = <
       options
     )};
 
+export const CreateRoomDocument = `
+    mutation createRoom($room: CreateRoomInput) {
+  createRoom(room: $room) {
+    id
+  }
+}
+    `;
+
+export const useCreateRoomMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      dataSource: { endpoint: string, fetchParams?: RequestInit },
+      options?: UseMutationOptions<CreateRoomMutation, TError, CreateRoomMutationVariables, TContext>
+    ) => {
+    
+    return useMutation<CreateRoomMutation, TError, CreateRoomMutationVariables, TContext>(
+      ['createRoom'],
+      (variables?: CreateRoomMutationVariables) => fetcher<CreateRoomMutation, CreateRoomMutationVariables>(dataSource.endpoint, dataSource.fetchParams || {}, CreateRoomDocument, variables)(),
+      options
+    )};
+
 export const GetAllServersDocument = `
     query getAllServers($page: Int!, $size: Int!, $search: String) {
   getAllServers(page: $page, size: $size, search: $search) {
@@ -766,5 +802,29 @@ export const useGetAllServersQuery = <
     return useQuery<GetAllServersQuery, TError, TData>(
       ['getAllServers', variables],
       fetcher<GetAllServersQuery, GetAllServersQueryVariables>(dataSource.endpoint, dataSource.fetchParams || {}, GetAllServersDocument, variables),
+      options
+    )};
+
+export const JoinServerDocument = `
+    mutation joinServer($input: JoinServerInput) {
+  joinServer(input: $input) {
+    id
+    serverImg
+    name
+  }
+}
+    `;
+
+export const useJoinServerMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      dataSource: { endpoint: string, fetchParams?: RequestInit },
+      options?: UseMutationOptions<JoinServerMutation, TError, JoinServerMutationVariables, TContext>
+    ) => {
+    
+    return useMutation<JoinServerMutation, TError, JoinServerMutationVariables, TContext>(
+      ['joinServer'],
+      (variables?: JoinServerMutationVariables) => fetcher<JoinServerMutation, JoinServerMutationVariables>(dataSource.endpoint, dataSource.fetchParams || {}, JoinServerDocument, variables)(),
       options
     )};

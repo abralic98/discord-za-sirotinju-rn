@@ -16,8 +16,8 @@ export default function SettingsPage() {
   };
 
   return (
-    <SafeAreaView>
-      <View>
+    <SafeAreaView edges={["top"]}>
+      <View className="h-full">
         <TextSm>setting </TextSm>
         <Button onPress={logout}>
           <TextMd>Logout</TextMd>

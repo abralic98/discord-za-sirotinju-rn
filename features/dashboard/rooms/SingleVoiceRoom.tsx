@@ -9,7 +9,9 @@ export const SingleVoiceRoom = ({ room }: { room: Room | null }) => {
   return (
     <View className="w-full h-16 bg-gray-800 flex flex-row items-center justify-start gap-4 p-4 rounded-lg">
       <AudioLinesIcon className="text-white" />
-      <TextLg className="font-semibold">{room?.name}</TextLg>
+      <TextLg numberOfLines={1} ellipsizeMode="tail" className="font-semibold flex-1">
+        {room?.name}
+      </TextLg>
     </View>
   );
 };

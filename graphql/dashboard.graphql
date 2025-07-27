@@ -20,3 +20,9 @@ query getRoomsByServerId($id: ID!) {
     }
   }
 }
+
+mutation createRoom($room: CreateRoomInput) {
+  createRoom(room: $room) {
+    id
+  }
+}

@@ -12,6 +12,7 @@ import { handleGraphqlError } from "@/helpers/GraphqlCatchError";
 import { TextLg, TextMd, TextXl3 } from "@/lib/typography";
 import { SingleRoom } from "./SingleRoom";
 import { SingleVoiceRoom } from "./SingleVoiceRoom";
+import { CreateRoom } from "./CreateRoom";
 
 export const RoomList = () => {
   const { activeServer } = useRoomStore();
@@ -41,26 +42,27 @@ export const RoomList = () => {
       </View>
     );
 
-  if (!Boolean(data?.text?.length) && !Boolean(data?.text?.length)) {
-    return (
-      <View className="w-full pl-3 pt-3 bg-dark-server">
-        <TextLg>No rooms</TextLg>
-      </View>
-    );
-  }
-
   return (
-    <View className="flex-1 h-full px-3 pt-3 bg-dark-server flex flex-col gap-4">
-      <TextXl3 className="font-bold">{activeServer.name}</TextXl3>
+    <View className="flex-1 h-full px-4 pt-4 bg-dark-server flex flex-col gap-4 rounded-tl-3xl">
+      <View className="flex-row justify-between w-full ">
+        <TextXl3
+          ellipsizeMode="tail"
+          numberOfLines={2}
+          className="font-bold w-[60%]"
+        >
+          {activeServer.name}
+        </TextXl3>
+        <CreateRoom />
+      </View>
       <ScrollView>
-        <TextLg>Text channels</TextLg>
+        {Boolean(data?.text?.length) && <TextLg>Text channels</TextLg>}
         <View className="h-4" />
         <View className="flex flex-col gap-4 pb-4">
           {data?.text?.map((room) => {
             return <SingleRoom key={room?.id} room={room} />;
           })}
         </View>
-        <TextLg>Voice channels</TextLg>
+        {Boolean(data?.voice?.length) && <TextLg>Voice channels</TextLg>}
         <View className="h-4" />
         <View className="flex flex-col gap-4">
           {data?.voice?.map((room) => {
