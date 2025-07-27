@@ -25,7 +25,7 @@ export const TextLg = ({
   className,
 }: PropsWithChildren & { className?: string }) => {
   return (
-    <Text style={{ fontSize: 18 }} className={cn("text-white", className)}>
+    <Text style={{ fontSize: 18 }} className={cn("text-white font-semibold", className)}>
       {children}
     </Text>
   );
@@ -38,7 +38,7 @@ export const TextXl = ({
   return (
     <Text
       style={{ fontSize: 20 }}
-      className={cn("text-white text-xl", className)}
+      className={cn("text-white text-xl font-semibold", className)}
     >
       {children}
     </Text>
@@ -52,7 +52,7 @@ export const TextXl2 = ({
   return (
     <Text
       style={{ fontSize: 22 }}
-      className={cn("text-white text-2xl", className)}
+      className={cn("text-white text-2xl font-semibold", className)}
     >
       {children}
     </Text>
@@ -66,7 +66,7 @@ export const TextXl3 = ({
   return (
     <Text
       style={{ fontSize: 24 }}
-      className={cn("text-white text-3xl", className)}
+      className={cn("text-white text-3xl font-semibold", className)}
     >
       {children}
     </Text>

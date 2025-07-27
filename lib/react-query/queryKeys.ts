@@ -1,4 +1,5 @@
 export const queryKeys = {
   meQuery: "meQuery",
-  getAllUserServers: "getAllUserServers"
+  getAllUserServers: "getAllUserServers",
+  getRoomsByServerId: "getRoomsByServerId"
 };

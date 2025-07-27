@@ -1,14 +1,16 @@
 import { Server } from "@/generated/graphql";
 import { TextXl3 } from "@/lib/typography";
 import React from "react";
-import { View } from "react-native";
+import { Pressable, View } from "react-native";
 import { Image } from "expo-image";
+import { useRoomStore } from "../rooms/store";
 
 export const SingleServer = ({ server }: { server: Server | null }) => {
+  const { setActiveServer } = useRoomStore();
   if (!server) return null;
 
   const renderIcon = () => {
-    if (server?.serverImg) {
+    if (server?.serverImg === "kita") {
       return (
         <Image
           alt="server icon"
@@ -27,8 +29,13 @@ export const SingleServer = ({ server }: { server: Server | null }) => {
     }
   };
   return (
-    <View className="w-20 h-20 bg-dark-server rounded-full flex items-center justify-center">
+    <Pressable
+      className="w-20 h-20 bg-dark-server rounded-full flex items-center justify-center"
+      onPress={() => {
+        setActiveServer(server);
+      }}
+    >
       {renderIcon()}
-    </View>
+    </Pressable>
   );
 };

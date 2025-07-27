@@ -7,7 +7,6 @@ import {
   saveToStorage,
 } from "@/lib/secure-storage/storage";
 import { StorageKeys } from "@/lib/secure-storage/storageKeys";
-import routes from "@/lib/routes";
 
 interface AuthStore {
   token: string | null;

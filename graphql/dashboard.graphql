@@ -5,3 +5,18 @@ query getAllUserServers {
     serverImg
   }
 }
+
+query getRoomsByServerId($id: ID!) {
+  getRoomsByServerId(id: $id) {
+    text {
+      id
+      name
+      maxLimit
+    }
+    voice {
+      id
+      name
+      maxLimit
+    }
+  }
+}

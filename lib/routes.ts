@@ -15,6 +15,7 @@ const routes = {
   discover: `/discover` as const,
   serverSettings: `${settings}/server` as const,
   dm: `/dm` as const,
+  room: `${tabs}/dashboard/room`
 } as const;
 
 export default routes;

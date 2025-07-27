@@ -531,6 +531,13 @@ export type GetAllUserServersQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetAllUserServersQuery = { __typename?: 'Query', getAllUserServers?: Array<{ __typename?: 'Server', id?: string | null, name?: string | null, serverImg?: string | null } | null> | null };
 
+export type GetRoomsByServerIdQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type GetRoomsByServerIdQuery = { __typename?: 'Query', getRoomsByServerId?: { __typename?: 'Rooms', text?: Array<{ __typename?: 'Room', id: string, name: string, maxLimit?: number | null } | null> | null, voice?: Array<{ __typename?: 'Room', id: string, name: string, maxLimit?: number | null } | null> | null } | null };
+
 
 
 export const CreateSessionDocument = `
@@ -681,5 +688,37 @@ export const useGetAllUserServersQuery = <
     return useQuery<GetAllUserServersQuery, TError, TData>(
       variables === undefined ? ['getAllUserServers'] : ['getAllUserServers', variables],
       fetcher<GetAllUserServersQuery, GetAllUserServersQueryVariables>(dataSource.endpoint, dataSource.fetchParams || {}, GetAllUserServersDocument, variables),
+      options
+    )};
+
+export const GetRoomsByServerIdDocument = `
+    query getRoomsByServerId($id: ID!) {
+  getRoomsByServerId(id: $id) {
+    text {
+      id
+      name
+      maxLimit
+    }
+    voice {
+      id
+      name
+      maxLimit
+    }
+  }
+}
+    `;
+
+export const useGetRoomsByServerIdQuery = <
+      TData = GetRoomsByServerIdQuery,
+      TError = unknown
+    >(
+      dataSource: { endpoint: string, fetchParams?: RequestInit },
+      variables: GetRoomsByServerIdQueryVariables,
+      options?: UseQueryOptions<GetRoomsByServerIdQuery, TError, TData>
+    ) => {
+    
+    return useQuery<GetRoomsByServerIdQuery, TError, TData>(
+      ['getRoomsByServerId', variables],
+      fetcher<GetRoomsByServerIdQuery, GetRoomsByServerIdQueryVariables>(dataSource.endpoint, dataSource.fetchParams || {}, GetRoomsByServerIdDocument, variables),
       options
     )};

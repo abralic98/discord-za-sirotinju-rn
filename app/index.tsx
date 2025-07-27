@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import CustomSplash from "@/components/CustomSplash";
 import routes from "@/lib/routes";
-import { Redirect, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 
 export default function Index() {
   const { isAuthorized, isLoading } = useAuth();

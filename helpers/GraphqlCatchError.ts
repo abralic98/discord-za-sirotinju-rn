@@ -36,6 +36,6 @@ export const handleGraphqlError = (error: Error | null) => {
   err &&
     Toast.show({
       type: "error",
-      text1: err.response.errors[0].message,
+      text1: err?.response?.errors?.[0]?.message,
     });
 };
