@@ -20,7 +20,6 @@ export const ServerList = () => {
     pageSize: 5,
     search: search,
   });
-  console.log(query.data?.pages[0]);
 
   if (query.error) {
     handleGraphqlError(query.error);

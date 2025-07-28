@@ -545,6 +545,16 @@ export type CreateRoomMutationVariables = Exact<{
 
 export type CreateRoomMutation = { __typename?: 'Mutation', createRoom?: { __typename?: 'Room', id: string } | null };
 
+export type GetMessagesByRoomIdQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+  page: Scalars['Int']['input'];
+  size: Scalars['Int']['input'];
+  search?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type GetMessagesByRoomIdQuery = { __typename?: 'Query', getMessagesByRoomId: { __typename?: 'MessagePage', totalPages: number, totalElements: number, number: number, size: number, content: Array<{ __typename?: 'Message', id?: string | null, text?: string | null, type?: MessageType | null, dateCreated?: string | null, imageUrl?: string | null, author?: { __typename?: 'User', id?: string | null, avatar?: string | null, username?: string | null } | null }> } };
+
 export type GetAllServersQueryVariables = Exact<{
   page: Scalars['Int']['input'];
   size: Scalars['Int']['input'];
@@ -765,6 +775,44 @@ export const useCreateRoomMutation = <
     return useMutation<CreateRoomMutation, TError, CreateRoomMutationVariables, TContext>(
       ['createRoom'],
       (variables?: CreateRoomMutationVariables) => fetcher<CreateRoomMutation, CreateRoomMutationVariables>(dataSource.endpoint, dataSource.fetchParams || {}, CreateRoomDocument, variables)(),
+      options
+    )};
+
+export const GetMessagesByRoomIdDocument = `
+    query getMessagesByRoomId($id: ID!, $page: Int!, $size: Int!, $search: String) {
+  getMessagesByRoomId(id: $id, page: $page, size: $size, search: $search) {
+    totalPages
+    totalElements
+    number
+    size
+    content {
+      id
+      text
+      author {
+        id
+        avatar
+        username
+      }
+      type
+      dateCreated
+      imageUrl
+    }
+  }
+}
+    `;
+
+export const useGetMessagesByRoomIdQuery = <
+      TData = GetMessagesByRoomIdQuery,
+      TError = unknown
+    >(
+      dataSource: { endpoint: string, fetchParams?: RequestInit },
+      variables: GetMessagesByRoomIdQueryVariables,
+      options?: UseQueryOptions<GetMessagesByRoomIdQuery, TError, TData>
+    ) => {
+    
+    return useQuery<GetMessagesByRoomIdQuery, TError, TData>(
+      ['getMessagesByRoomId', variables],
+      fetcher<GetMessagesByRoomIdQuery, GetMessagesByRoomIdQueryVariables>(dataSource.endpoint, dataSource.fetchParams || {}, GetMessagesByRoomIdDocument, variables),
       options
     )};
 

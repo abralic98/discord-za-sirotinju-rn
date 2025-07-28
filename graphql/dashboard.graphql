@@ -26,3 +26,24 @@ mutation createRoom($room: CreateRoomInput) {
     id
   }
 }
+
+query getMessagesByRoomId($id: ID!, $page: Int!, $size: Int!, $search: String) {
+  getMessagesByRoomId(id: $id, page: $page, size: $size, search: $search) {
+    totalPages
+    totalElements
+    number
+    size
+    content {
+      id
+      text
+      author {
+        id
+        avatar
+        username
+      }
+      type
+      dateCreated
+      imageUrl
+    }
+  }
+}

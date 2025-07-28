@@ -61,14 +61,6 @@ export default function TabLayout() {
           ),
         }}
       />
-      <Tabs.Screen
-        name="dashboard/room/[id]"
-        options={{
-          href: null,
-          animation: "shift",
-        }}
-      />
-
     </Tabs>
   );
 }
