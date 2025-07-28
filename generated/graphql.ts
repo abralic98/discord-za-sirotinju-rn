@@ -555,6 +555,20 @@ export type GetMessagesByRoomIdQueryVariables = Exact<{
 
 export type GetMessagesByRoomIdQuery = { __typename?: 'Query', getMessagesByRoomId: { __typename?: 'MessagePage', totalPages: number, totalElements: number, number: number, size: number, content: Array<{ __typename?: 'Message', id?: string | null, text?: string | null, type?: MessageType | null, dateCreated?: string | null, imageUrl?: string | null, author?: { __typename?: 'User', id?: string | null, avatar?: string | null, username?: string | null } | null }> } };
 
+export type CreateMessageMutationVariables = Exact<{
+  message?: InputMaybe<CreateMessageInput>;
+}>;
+
+
+export type CreateMessageMutation = { __typename?: 'Mutation', createMessage?: { __typename?: 'Message', id?: string | null } | null };
+
+export type SubscribeToMessagesByRoomIdSubscriptionVariables = Exact<{
+  roomId: Scalars['ID']['input'];
+}>;
+
+
+export type SubscribeToMessagesByRoomIdSubscription = { __typename?: 'Subscription', subscribeToMessagesByRoomId?: { __typename?: 'Message', id?: string | null, text?: string | null, type?: MessageType | null, dateCreated?: string | null, imageUrl?: string | null, author?: { __typename?: 'User', id?: string | null, avatar?: string | null, username?: string | null } | null } | null };
+
 export type GetAllServersQueryVariables = Exact<{
   page: Scalars['Int']['input'];
   size: Scalars['Int']['input'];
@@ -816,6 +830,44 @@ export const useGetMessagesByRoomIdQuery = <
       options
     )};
 
+export const CreateMessageDocument = `
+    mutation createMessage($message: CreateMessageInput) {
+  createMessage(message: $message) {
+    id
+  }
+}
+    `;
+
+export const useCreateMessageMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      dataSource: { endpoint: string, fetchParams?: RequestInit },
+      options?: UseMutationOptions<CreateMessageMutation, TError, CreateMessageMutationVariables, TContext>
+    ) => {
+    
+    return useMutation<CreateMessageMutation, TError, CreateMessageMutationVariables, TContext>(
+      ['createMessage'],
+      (variables?: CreateMessageMutationVariables) => fetcher<CreateMessageMutation, CreateMessageMutationVariables>(dataSource.endpoint, dataSource.fetchParams || {}, CreateMessageDocument, variables)(),
+      options
+    )};
+
+export const SubscribeToMessagesByRoomIdDocument = `
+    subscription subscribeToMessagesByRoomId($roomId: ID!) {
+  subscribeToMessagesByRoomId(roomId: $roomId) {
+    id
+    text
+    author {
+      id
+      avatar
+      username
+    }
+    type
+    dateCreated
+    imageUrl
+  }
+}
+    `;
 export const GetAllServersDocument = `
     query getAllServers($page: Int!, $size: Int!, $search: String) {
   getAllServers(page: $page, size: $size, search: $search) {

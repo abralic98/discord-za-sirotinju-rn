@@ -1,19 +1,23 @@
 import {
   GetMessagesByRoomIdDocument,
   GetMessagesByRoomIdQuery,
+  Message,
 } from "@/generated/graphql";
 import { handleGraphqlError } from "@/helpers/GraphqlCatchError";
 import { usePagination } from "@/hooks/usePagination";
 import { queryKeys } from "@/lib/react-query/queryKeys";
 import { FlashList } from "@shopify/flash-list";
-import React, { useRef } from "react";
-import { Dimensions, SafeAreaView, View } from "react-native";
+import React, { useMemo, useRef, useState } from "react";
+import { View } from "react-native";
 import { SingleMessage } from "./SingleMessage";
 import { useRoomStore } from "../rooms/store";
+import { useRoomConnection } from "./hooks/useRoomConnection";
 
 export const MessageList = () => {
   const { activeRoom } = useRoomStore();
-  const listRef = useRef(null);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const firstScrollDone = useRef(false);
+
   const query = usePagination<GetMessagesByRoomIdQuery, "getMessagesByRoomId">({
     queryKey: [queryKeys.getMessagesByRoomId, activeRoom?.id],
     document: GetMessagesByRoomIdDocument,
@@ -23,32 +27,45 @@ export const MessageList = () => {
       id: activeRoom?.id,
     },
   });
+  console.log(messages);
+
+  useRoomConnection((newMessage) => {
+    setMessages((prev) => [...prev, newMessage]);
+  });
+
+  const allMessages =
+    query.data?.pages.flatMap((page) => page.getMessagesByRoomId.content) ?? [];
+
+  const combinedMessages = useMemo(() => {
+    // Reverse a copy of messages so original is not mutated
+    const reversedMessages = [...messages].reverse();
+    return [...reversedMessages, ...allMessages];
+  }, [messages, allMessages]);
 
   if (query.error) {
     handleGraphqlError(query.error);
   }
 
-  const allMessages =
-    query.data?.pages.flatMap((page) => page.getMessagesByRoomId.content) || [];
-
-  const screenHeight = Dimensions.get("window").height;
-  const adjustedHeight = screenHeight - 260;
   return (
-    <View className="w-full px-4 py-2" style={{ height: adjustedHeight }}>
+    <View className="flex-1 w-full px-4 py-2">
       <FlashList
-        ref={listRef}
-        data={allMessages}
+        data={combinedMessages}
         estimatedItemSize={60}
-        keyExtractor={(item) => String(item?.id)}
+        keyExtractor={(item) => String(item.id)}
+        renderItem={({ item }) => (
+          <SingleMessage key={item?.id} message={item} />
+        )}
         ItemSeparatorComponent={() => <View className="h-4" />}
-        renderItem={({ item }) => <SingleMessage message={item} />}
+        onEndReachedThreshold={0.1}
         onEndReached={() => {
           if (query.hasNextPage && !query.isFetchingNextPage) {
             query.fetchNextPage();
           }
         }}
         inverted
-        scrollEventThrottle={16}
+        ListHeaderComponent={
+          query.hasNextPage ? <View className="h-6" /> : null
+        }
       />
     </View>
   );

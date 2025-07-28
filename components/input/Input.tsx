@@ -3,7 +3,7 @@ import { View, TextInput, TextInputProps, Pressable } from "react-native";
 import { cn } from "@/lib/utils";
 import { EyeIcon, EyeOffIcon } from "lucide-nativewind";
 
-type RNInputProps = TextInputProps & {
+export type RNInputProps = TextInputProps & {
   secure?: boolean;
   icon?: React.ReactNode;
   onPressIcon?: () => void;

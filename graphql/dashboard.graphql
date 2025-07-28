@@ -47,3 +47,24 @@ query getMessagesByRoomId($id: ID!, $page: Int!, $size: Int!, $search: String) {
     }
   }
 }
+
+mutation createMessage($message: CreateMessageInput) {
+  createMessage(message: $message) {
+    id
+  }
+}
+
+subscription subscribeToMessagesByRoomId($roomId: ID!) {
+  subscribeToMessagesByRoomId(roomId: $roomId) {
+    id
+    text
+    author {
+      id
+      avatar
+      username
+    }
+    type
+    dateCreated
+    imageUrl
+  }
+}
