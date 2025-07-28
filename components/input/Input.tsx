@@ -24,7 +24,7 @@ const Input = React.forwardRef<TextInput, RNInputProps>(
           editable={editable}
           placeholderTextColor="#9ca3af"
           className={cn(
-            "h-12 w-full rounded-md border border-input bg-dark-input pl-3 pr-10 text-base text-white",
+            "h-12 w-full rounded-md border border-input bg-dark-input pl-3 pr-10 text-white",
             "placeholder:text-gray",
             !editable && "opacity-50",
             className,

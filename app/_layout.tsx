@@ -9,6 +9,7 @@ import { queryClient } from "@/lib/react-query/queryClient";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { TransitionPresets } from "@react-navigation/bottom-tabs";
 
 export default function RootLayout() {
   return (
@@ -17,7 +18,12 @@ export default function RootLayout() {
         <SafeAreaProvider>
           <QueryClientProvider client={queryClient}>
             <ThemeProvider value={DarkTheme}>
-              <Stack screenOptions={{ headerShown: false }} />
+              <Stack
+                screenOptions={{
+                  headerShown: false,
+                  gestureDirection: "horizontal",
+                }}
+              />
               <Toast />
             </ThemeProvider>
           </QueryClientProvider>
