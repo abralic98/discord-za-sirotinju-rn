@@ -3,6 +3,9 @@ query getAllUserServers {
     id
     name
     serverImg
+    createdBy{
+      id
+    }
   }
 }
 
@@ -72,6 +75,33 @@ subscription subscribeToMessagesByRoomId($roomId: ID!) {
 query getServerUsers($id: ID!) {
   getServerById(id: $id) {
     id
+    joinedUsers {
+      id
+      username
+      avatar
+      userPresence
+    }
+    createdBy {
+      id
+    }
+  }
+}
+
+mutation updateServer($server: UpdateServerInput){
+  updateServer(server: $server){
+    id
+    name
+  }
+}
+
+query getServerById($id: ID!) {
+  getServerById(id: $id) {
+    id
+    name
+    description
+    publicServer
+    serverImg
+    banner
     joinedUsers {
       id
       username

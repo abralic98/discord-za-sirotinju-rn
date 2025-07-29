@@ -529,7 +529,7 @@ export type MeQueryQuery = { __typename?: 'Query', meQuery?: { __typename?: 'Use
 export type GetAllUserServersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllUserServersQuery = { __typename?: 'Query', getAllUserServers?: Array<{ __typename?: 'Server', id?: string | null, name?: string | null, serverImg?: string | null } | null> | null };
+export type GetAllUserServersQuery = { __typename?: 'Query', getAllUserServers?: Array<{ __typename?: 'Server', id?: string | null, name?: string | null, serverImg?: string | null, createdBy?: { __typename?: 'User', id?: string | null } | null } | null> | null };
 
 export type GetRoomsByServerIdQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -575,6 +575,20 @@ export type GetServerUsersQueryVariables = Exact<{
 
 
 export type GetServerUsersQuery = { __typename?: 'Query', getServerById?: { __typename?: 'Server', id?: string | null, joinedUsers?: Array<{ __typename?: 'User', id?: string | null, username?: string | null, avatar?: string | null, userPresence?: UserPresenceType | null } | null> | null, createdBy?: { __typename?: 'User', id?: string | null } | null } | null };
+
+export type UpdateServerMutationVariables = Exact<{
+  server?: InputMaybe<UpdateServerInput>;
+}>;
+
+
+export type UpdateServerMutation = { __typename?: 'Mutation', updateServer?: { __typename?: 'Server', id?: string | null, name?: string | null } | null };
+
+export type GetServerByIdQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type GetServerByIdQuery = { __typename?: 'Query', getServerById?: { __typename?: 'Server', id?: string | null, name?: string | null, description?: string | null, publicServer?: boolean | null, serverImg?: string | null, banner?: string | null, joinedUsers?: Array<{ __typename?: 'User', id?: string | null, username?: string | null, avatar?: string | null, userPresence?: UserPresenceType | null } | null> | null, createdBy?: { __typename?: 'User', id?: string | null } | null } | null };
 
 export type GetAllServersQueryVariables = Exact<{
   page: Scalars['Int']['input'];
@@ -726,6 +740,9 @@ export const GetAllUserServersDocument = `
     id
     name
     serverImg
+    createdBy {
+      id
+    }
   }
 }
     `;
@@ -904,6 +921,66 @@ export const useGetServerUsersQuery = <
     return useQuery<GetServerUsersQuery, TError, TData>(
       ['getServerUsers', variables],
       fetcher<GetServerUsersQuery, GetServerUsersQueryVariables>(dataSource.endpoint, dataSource.fetchParams || {}, GetServerUsersDocument, variables),
+      options
+    )};
+
+export const UpdateServerDocument = `
+    mutation updateServer($server: UpdateServerInput) {
+  updateServer(server: $server) {
+    id
+    name
+  }
+}
+    `;
+
+export const useUpdateServerMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      dataSource: { endpoint: string, fetchParams?: RequestInit },
+      options?: UseMutationOptions<UpdateServerMutation, TError, UpdateServerMutationVariables, TContext>
+    ) => {
+    
+    return useMutation<UpdateServerMutation, TError, UpdateServerMutationVariables, TContext>(
+      ['updateServer'],
+      (variables?: UpdateServerMutationVariables) => fetcher<UpdateServerMutation, UpdateServerMutationVariables>(dataSource.endpoint, dataSource.fetchParams || {}, UpdateServerDocument, variables)(),
+      options
+    )};
+
+export const GetServerByIdDocument = `
+    query getServerById($id: ID!) {
+  getServerById(id: $id) {
+    id
+    name
+    description
+    publicServer
+    serverImg
+    banner
+    joinedUsers {
+      id
+      username
+      avatar
+      userPresence
+    }
+    createdBy {
+      id
+    }
+  }
+}
+    `;
+
+export const useGetServerByIdQuery = <
+      TData = GetServerByIdQuery,
+      TError = unknown
+    >(
+      dataSource: { endpoint: string, fetchParams?: RequestInit },
+      variables: GetServerByIdQueryVariables,
+      options?: UseQueryOptions<GetServerByIdQuery, TError, TData>
+    ) => {
+    
+    return useQuery<GetServerByIdQuery, TError, TData>(
+      ['getServerById', variables],
+      fetcher<GetServerByIdQuery, GetServerByIdQueryVariables>(dataSource.endpoint, dataSource.fetchParams || {}, GetServerByIdDocument, variables),
       options
     )};
 

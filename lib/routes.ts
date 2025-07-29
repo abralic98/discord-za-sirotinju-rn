@@ -13,7 +13,7 @@ const routes = {
   account: `${settings}/account` as const,
   voice: `${settings}/voice` as const,
   discover: `/discover` as const,
-  serverSettings: `${settings}/server` as const,
+  serverSettings: `${tabs}/dashboard/server-settings` as const,
   dm: `/dm` as const,
   room: `${tabs}/dashboard/room`,
   serverUsers: `${tabs}/dashboard/room/users`,

@@ -9,13 +9,19 @@ import {
 } from "@/generated/graphql";
 import { requestWithAuth } from "@/lib/graphql/client";
 import { handleGraphqlError } from "@/helpers/GraphqlCatchError";
-import { TextLg, TextMd, TextXl3 } from "@/lib/typography";
+import { TextLg, TextXl3 } from "@/lib/typography";
 import { SingleRoom } from "./SingleRoom";
 import { SingleVoiceRoom } from "./SingleVoiceRoom";
 import { CreateRoom } from "./CreateRoom";
+import { SettingsIcon } from "lucide-nativewind";
+import { useAuthStore } from "@/features/auth/store";
+import routes from "@/lib/routes";
+import { useRouter } from "expo-router";
 
 export const RoomList = () => {
   const { activeServer } = useRoomStore();
+  const { user } = useAuthStore();
+  const { push } = useRouter();
 
   const { data, error } = useQuery({
     queryKey: [queryKeys.getRoomsByServerId, activeServer?.id],
@@ -38,21 +44,29 @@ export const RoomList = () => {
   if (!activeServer?.id)
     return (
       <View>
-        <TextMd>non</TextMd>
+        <TextLg className="font-bold">Select Server</TextLg>
       </View>
     );
 
   return (
-    <View className="flex-1 h-full px-4 pt-4 bg-dark-server flex flex-col gap-4 rounded-tl-3xl">
-      <View className="flex-row justify-between w-full ">
+    <View className="flex-1 h-full px-4 pt-4 bg-dark-server flex-col gap-4 rounded-tl-3xl">
+      <View className="flex-row justify-between items-center">
         <TextXl3
           ellipsizeMode="tail"
           numberOfLines={2}
-          className="font-bold w-[60%]"
+          className="font-bold max-w-[50%]"
         >
           {activeServer.name}
         </TextXl3>
-        <CreateRoom />
+        <View className="flex-row gap-4 items-center ">
+          {activeServer.createdBy?.id === user?.id && (
+            <SettingsIcon
+              onPress={() => push(routes.serverSettings)}
+              className="w-8 h-8 text-white"
+            />
+          )}
+          <CreateRoom />
+        </View>
       </View>
       <ScrollView>
         {Boolean(data?.text?.length) && <TextLg>Text channels</TextLg>}
