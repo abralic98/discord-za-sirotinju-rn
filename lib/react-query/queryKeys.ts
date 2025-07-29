@@ -4,5 +4,6 @@ export const queryKeys = {
   getRoomsByServerId: "getRoomsByServerId",
   getAllServers: "getAllServers",
   getMessagesByRoomId: "getMessagesByRoomId", 
+  getSearchedMessagesByRoomId: "getSearchedMessagesByRoomId", 
   getServerUsers: "getServerUsers",
 };
