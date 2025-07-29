@@ -3,8 +3,13 @@ import { Image } from "expo-image";
 import { UserIcon } from "lucide-nativewind";
 import React from "react";
 import { View } from "react-native";
+import { UserPresence } from "./custom/user/UserPresence";
 
-export const UserAvatar = ({ user }: { user?: User | null }) => {
+interface Props {
+  user?: User | null;
+  withPresence?: boolean;
+}
+export const UserAvatar = ({ user, withPresence }: Props) => {
   const renderAvatar = () => {
     if (user?.avatar) {
       return (
@@ -23,5 +28,10 @@ export const UserAvatar = ({ user }: { user?: User | null }) => {
       );
     }
   };
-  return <View className="w-14 h-14 ">{renderAvatar()}</View>;
+  return (
+    <View className="w-14 h-14 ">
+      {renderAvatar()}
+      {withPresence && <UserPresence presence={user?.userPresence} />}
+    </View>
+  );
 };

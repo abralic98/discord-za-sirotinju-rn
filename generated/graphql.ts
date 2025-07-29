@@ -569,6 +569,13 @@ export type SubscribeToMessagesByRoomIdSubscriptionVariables = Exact<{
 
 export type SubscribeToMessagesByRoomIdSubscription = { __typename?: 'Subscription', subscribeToMessagesByRoomId?: { __typename?: 'Message', id?: string | null, text?: string | null, type?: MessageType | null, dateCreated?: string | null, imageUrl?: string | null, author?: { __typename?: 'User', id?: string | null, avatar?: string | null, username?: string | null } | null } | null };
 
+export type GetServerUsersQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type GetServerUsersQuery = { __typename?: 'Query', getServerById?: { __typename?: 'Server', id?: string | null, joinedUsers?: Array<{ __typename?: 'User', id?: string | null, username?: string | null, avatar?: string | null, userPresence?: UserPresenceType | null } | null> | null, createdBy?: { __typename?: 'User', id?: string | null } | null } | null };
+
 export type GetAllServersQueryVariables = Exact<{
   page: Scalars['Int']['input'];
   size: Scalars['Int']['input'];
@@ -868,6 +875,38 @@ export const SubscribeToMessagesByRoomIdDocument = `
   }
 }
     `;
+export const GetServerUsersDocument = `
+    query getServerUsers($id: ID!) {
+  getServerById(id: $id) {
+    id
+    joinedUsers {
+      id
+      username
+      avatar
+      userPresence
+    }
+    createdBy {
+      id
+    }
+  }
+}
+    `;
+
+export const useGetServerUsersQuery = <
+      TData = GetServerUsersQuery,
+      TError = unknown
+    >(
+      dataSource: { endpoint: string, fetchParams?: RequestInit },
+      variables: GetServerUsersQueryVariables,
+      options?: UseQueryOptions<GetServerUsersQuery, TError, TData>
+    ) => {
+    
+    return useQuery<GetServerUsersQuery, TError, TData>(
+      ['getServerUsers', variables],
+      fetcher<GetServerUsersQuery, GetServerUsersQueryVariables>(dataSource.endpoint, dataSource.fetchParams || {}, GetServerUsersDocument, variables),
+      options
+    )};
+
 export const GetAllServersDocument = `
     query getAllServers($page: Int!, $size: Int!, $search: String) {
   getAllServers(page: $page, size: $size, search: $search) {

@@ -68,3 +68,18 @@ subscription subscribeToMessagesByRoomId($roomId: ID!) {
     imageUrl
   }
 }
+
+query getServerUsers($id: ID!) {
+  getServerById(id: $id) {
+    id
+    joinedUsers {
+      id
+      username
+      avatar
+      userPresence
+    }
+    createdBy {
+      id
+    }
+  }
+}

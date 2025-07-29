@@ -12,7 +12,7 @@ import { requestWithAuth } from "@/lib/graphql/client";
 import { useCloudStorage } from "@/hooks/useCloudStorage";
 import { useRoomStore } from "../rooms/store";
 import { FormChatInput } from "@/components/form/FormChatInput";
-import { View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import { handleGraphqlError } from "@/helpers/GraphqlCatchError";
 import * as ImagePicker from "expo-image-picker";
 import { ImageIcon, SendIcon } from "lucide-nativewind";
@@ -44,9 +44,6 @@ export const SendMessage = () => {
     },
     onSuccess: () => {
       form.reset();
-      setTimeout(() => {
-        // scrollToBottom(scrollRef.current);
-      }, 100);
     },
     onError: (error) => {
       handleGraphqlError(error);
@@ -87,6 +84,7 @@ export const SendMessage = () => {
     <FormProvider {...form}>
       {activeRoom && (
         <View className="w-full">
+          {isLoading && <ActivityIndicator className="p-4" />}
           <FormChatInput<CreateMessageInput>
             name="text"
             placeholder={placeholder}

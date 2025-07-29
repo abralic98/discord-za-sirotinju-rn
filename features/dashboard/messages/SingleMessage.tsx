@@ -36,6 +36,7 @@ export const SingleMessage = ({ message }: Props) => {
           style={{
             width: "100%",
             aspectRatio,
+            borderRadius: 20
           }}
           contentFit="cover"
           onLoad={({ source }) => {
