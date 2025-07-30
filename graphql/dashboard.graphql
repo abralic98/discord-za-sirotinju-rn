@@ -91,6 +91,9 @@ mutation updateServer($server: UpdateServerInput){
   updateServer(server: $server){
     id
     name
+    description
+    serverImg
+    banner
   }
 }
 

@@ -22,6 +22,7 @@ import { queryKeys } from "@/lib/react-query/queryKeys";
 import { handleGraphqlError } from "@/helpers/GraphqlCatchError";
 import { useRoomStore } from "../store";
 import { FormTextArea } from "@/components/input/FormTextArea";
+import { ConfirmationButtons } from "@/components/custom/ConfirmationButtons";
 
 interface ModifiedServerInput {
   name: string;
@@ -61,7 +62,11 @@ export const BasicInfo = ({ server }: { server?: Server | null }) => {
       queryClient.refetchQueries({
         queryKey: [queryKeys.getAllUserServers],
       });
-      setActiveServer({ ...activeServer, name: res?.updateServer?.name });
+      setActiveServer({
+        ...activeServer,
+        name: res?.updateServer?.name,
+        description: res?.updateServer?.description,
+      });
     },
     onError: (error) => {
       handleGraphqlError(error);
@@ -78,18 +83,10 @@ export const BasicInfo = ({ server }: { server?: Server | null }) => {
       <FormProvider<ModifiedServerInput> {...form}>
         <FormInput name="name" label="Server name" />
         <FormTextArea name="description" label="Server description" />
-        <View className="flex-row justify-between">
-          <Button
-            onPress={() => form.reset()}
-            className="min-w-[35%]"
-            variant={"destructive"}
-          >
-            <TextMd className="font-semibold">Cancel</TextMd>
-          </Button>
-          <Button onPress={form.handleSubmit(submit)} className="min-w-[35%]">
-            <TextMd className="font-semibold">Submit</TextMd>
-          </Button>
-        </View>
+        <ConfirmationButtons
+          cancel={() => form.reset()}
+          submit={form.handleSubmit(submit)}
+        />
       </FormProvider>
     </DefaultCard>
   );

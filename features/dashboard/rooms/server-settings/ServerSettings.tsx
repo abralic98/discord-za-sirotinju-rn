@@ -8,7 +8,9 @@ import { GetServerByIdDocument, GetServerByIdQuery } from "@/generated/graphql";
 import { requestWithAuth } from "@/lib/graphql/client";
 import { handleGraphqlError } from "@/helpers/GraphqlCatchError";
 import { TextLg } from "@/lib/typography";
-import { UpdateServerIcon } from "./UpdateServerIcon";
+import { EditServerIcon } from "./EditServerIcon";
+import { EditServerBanner } from "./EditServerBanner";
+import { UserList } from "./users-settings/UserList";
 
 export const ServerSettings = () => {
   const { activeServer } = useRoomStore();
@@ -32,7 +34,9 @@ export const ServerSettings = () => {
   return (
     <View className="gap-4">
       <BasicInfo server={data} />
-      <UpdateServerIcon server={data} />
+      <EditServerIcon server={data} />
+      <EditServerBanner server={data} />
+      <UserList server={data} />
     </View>
   );
 };

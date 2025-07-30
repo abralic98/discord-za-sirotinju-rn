@@ -22,7 +22,7 @@ export const UserAvatar = ({ user, withPresence }: Props) => {
       );
     } else {
       return (
-        <View className="w-20 h-20 rounded-full">
+        <View className="w-full h-full rounded-full bg-dark-active-server items-center justify-center">
           <UserIcon className="text-white" />
         </View>
       );

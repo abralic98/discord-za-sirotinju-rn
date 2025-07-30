@@ -15,7 +15,7 @@ export default function ServerSettingsPage() {
         <TextXl>Server Settings</TextXl>
       </View>
       <ScrollView className="h-full">
-        <View className="w-full flex flex-col h-full gap-4">
+        <View className="w-full flex flex-col pb-12 h-full ">
           <ServerSettings />
         </View>
       </ScrollView>

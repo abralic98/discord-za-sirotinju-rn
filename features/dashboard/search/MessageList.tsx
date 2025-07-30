@@ -67,6 +67,7 @@ export const MessageList = () => {
             query.fetchNextPage();
           }
         }}
+        contentContainerStyle={{ paddingBottom: 360 }}
       />
     </View>
   );

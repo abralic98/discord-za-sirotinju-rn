@@ -3,6 +3,7 @@ import * as React from "react";
 import { Pressable } from "react-native";
 import { TextClassContext } from "./Text";
 import { cn } from "@/lib/utils";
+import { Loader2Icon, LoaderIcon } from "lucide-nativewind";
 
 const buttonVariants = cva(
   "group flex items-center justify-center rounded-md web:ring-offset-background web:transition-colors web:focus-visible:outline-none web:focus-visible:ring-2 web:focus-visible:ring-ring web:focus-visible:ring-offset-2",
@@ -57,9 +58,16 @@ const buttonTextVariants = cva(
 );
 
 type ButtonProps = React.ComponentProps<typeof Pressable> &
-  VariantProps<typeof buttonVariants>;
+  VariantProps<typeof buttonVariants> & { loading?: boolean };
 
-function Button({ ref, className, variant, size, ...props }: ButtonProps) {
+function Button({
+  ref,
+  className,
+  variant,
+  size,
+  loading,
+  ...props
+}: ButtonProps) {
   return (
     <TextClassContext.Provider
       value={buttonTextVariants({
@@ -76,6 +84,13 @@ function Button({ ref, className, variant, size, ...props }: ButtonProps) {
         ref={ref}
         role="button"
         {...props}
+        children={
+          loading ? (
+            <Loader2Icon className="animate-spin" color="white" />
+          ) : (
+            props.children
+          )
+        }
       />
     </TextClassContext.Provider>
   );

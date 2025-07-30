@@ -7,7 +7,7 @@ import { TextMd } from "@/lib/typography";
 interface CustomBottomSheetProps {
   trigger: (open: () => void) => ReactNode;
   children: ReactNode;
-  actionButtons: {
+  actionButtons?: {
     close?: () => void;
     confirm: () => void;
   };

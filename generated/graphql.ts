@@ -581,7 +581,7 @@ export type UpdateServerMutationVariables = Exact<{
 }>;
 
 
-export type UpdateServerMutation = { __typename?: 'Mutation', updateServer?: { __typename?: 'Server', id?: string | null, name?: string | null } | null };
+export type UpdateServerMutation = { __typename?: 'Mutation', updateServer?: { __typename?: 'Server', id?: string | null, name?: string | null, description?: string | null, serverImg?: string | null, banner?: string | null } | null };
 
 export type GetServerByIdQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -929,6 +929,9 @@ export const UpdateServerDocument = `
   updateServer(server: $server) {
     id
     name
+    description
+    serverImg
+    banner
   }
 }
     `;

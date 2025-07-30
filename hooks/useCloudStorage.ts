@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ID } from "react-native-appwrite";
 import { storageClient } from "@/lib/appwrite/client";
 import { ImagePickerAsset } from "expo-image-picker";
 
 interface UseCloudStorageProps {
   file: ImagePickerAsset | null;
+  setProgress?: Dispatch<SetStateAction<number>>;
 }
 
 interface UploadResult {
@@ -15,6 +16,7 @@ interface UploadResult {
 
 export const useCloudStorage = ({
   file,
+  setProgress,
 }: UseCloudStorageProps): UploadResult => {
   const bucketId = "6822fe5600188749a318";
   const [isLoading, setIsLoading] = useState(false);
@@ -40,6 +42,11 @@ export const useCloudStorage = ({
           bucketId,
           ID.unique(),
           fileObject,
+          [],
+          (prog: { progress: number }) => {
+            console.log("Upload progress:", prog.progress);
+            setProgress && setProgress(prog.progress / 100);
+          },
         );
         console.log("jel uslo", response);
 
