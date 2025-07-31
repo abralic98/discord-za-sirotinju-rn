@@ -632,6 +632,13 @@ export type GenerateInviteLinkMutationVariables = Exact<{
 
 export type GenerateInviteLinkMutation = { __typename?: 'Mutation', generateInviteLink?: string | null };
 
+export type CreateServerMutationVariables = Exact<{
+  server?: InputMaybe<CreateServerInput>;
+}>;
+
+
+export type CreateServerMutation = { __typename?: 'Mutation', createServer?: { __typename?: 'Server', id?: string | null, name?: string | null, serverImg?: string | null, createdBy?: { __typename?: 'User', id?: string | null } | null } | null };
+
 export type GetAllServersQueryVariables = Exact<{
   page: Scalars['Int']['input'];
   size: Scalars['Int']['input'];
@@ -639,7 +646,7 @@ export type GetAllServersQueryVariables = Exact<{
 }>;
 
 
-export type GetAllServersQuery = { __typename?: 'Query', getAllServers: { __typename?: 'ServerPage', totalPages: number, totalElements: number, number: number, size: number, content: Array<{ __typename?: 'Server', id?: string | null, name?: string | null, description?: string | null, banner?: string | null, serverImg?: string | null, joinedUsers?: Array<{ __typename?: 'User', id?: string | null, userPresence?: UserPresenceType | null } | null> | null }> } };
+export type GetAllServersQuery = { __typename?: 'Query', getAllServers: { __typename?: 'ServerPage', totalPages: number, totalElements: number, number: number, size: number, content: Array<{ __typename?: 'Server', id?: string | null, name?: string | null, description?: string | null, banner?: string | null, serverImg?: string | null, joinedUsers?: Array<{ __typename?: 'User', id?: string | null, userPresence?: UserPresenceType | null } | null> | null, createdBy?: { __typename?: 'User', id?: string | null } | null }> } };
 
 export type JoinServerMutationVariables = Exact<{
   input?: InputMaybe<JoinServerInput>;
@@ -1164,6 +1171,33 @@ export const useGenerateInviteLinkMutation = <
       options
     )};
 
+export const CreateServerDocument = `
+    mutation createServer($server: CreateServerInput) {
+  createServer(server: $server) {
+    id
+    name
+    serverImg
+    createdBy {
+      id
+    }
+  }
+}
+    `;
+
+export const useCreateServerMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      dataSource: { endpoint: string, fetchParams?: RequestInit },
+      options?: UseMutationOptions<CreateServerMutation, TError, CreateServerMutationVariables, TContext>
+    ) => {
+    
+    return useMutation<CreateServerMutation, TError, CreateServerMutationVariables, TContext>(
+      ['createServer'],
+      (variables?: CreateServerMutationVariables) => fetcher<CreateServerMutation, CreateServerMutationVariables>(dataSource.endpoint, dataSource.fetchParams || {}, CreateServerDocument, variables)(),
+      options
+    )};
+
 export const GetAllServersDocument = `
     query getAllServers($page: Int!, $size: Int!, $search: String) {
   getAllServers(page: $page, size: $size, search: $search) {
@@ -1180,6 +1214,9 @@ export const GetAllServersDocument = `
       joinedUsers {
         id
         userPresence
+      }
+      createdBy {
+        id
       }
     }
   }

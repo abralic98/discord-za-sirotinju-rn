@@ -4,12 +4,14 @@ import { FlashList } from "@shopify/flash-list";
 import {
   GetAllUserServersDocument,
   GetAllUserServersQuery,
+  Server,
 } from "@/generated/graphql";
 import { handleGraphqlError } from "@/helpers/GraphqlCatchError";
 import { requestWithAuth } from "@/lib/graphql/client";
 import { queryKeys } from "@/lib/react-query/queryKeys";
 import { useQuery } from "@tanstack/react-query";
 import { SingleServer } from "../SingleServer";
+import { CreateServer } from "./CreateServer";
 
 export const ServerList = () => {
   const { data, error } = useQuery({
@@ -26,13 +28,24 @@ export const ServerList = () => {
     handleGraphqlError(error);
   }
 
+  const createServer: Server = {
+    id: "creation",
+  };
+  const mergedData = [createServer, ...(data ?? [])];
+
   return (
     <FlashList
-      data={data || []}
+      data={mergedData || []}
       estimatedItemSize={60}
       keyExtractor={(item) => String(item?.id)}
       ItemSeparatorComponent={() => <View className="h-4" />}
-      renderItem={({ item }) => <SingleServer server={item} />}
+      renderItem={({ item }) => {
+        console.log(item?.id, 'item jebeni')
+        if (item?.id === "creation") {
+          return <CreateServer/>;
+        }
+        return <SingleServer server={item} />;
+      }}
     />
   );
 };

@@ -9,7 +9,10 @@ interface CustomBottomSheetProps {
   children: ReactNode;
   actionButtons?: {
     close?: () => void;
-    confirm: () => void;
+    confirm: {
+      text?: string;
+      action: () => void;
+    };
   };
   snapPoints?: (string | number)[];
 }
@@ -65,11 +68,11 @@ export const CustomBottomSheet: React.FC<CustomBottomSheetProps> = ({
                 <Button
                   className="min-w-[150px]"
                   onPress={() => {
-                    actionButtons.confirm();
+                    actionButtons.confirm.action();
                     close();
                   }}
                 >
-                  <TextMd>Create Room</TextMd>
+                  <TextMd>{actionButtons.confirm.text ?? "Submit"}</TextMd>
                 </Button>
               </View>
             )}

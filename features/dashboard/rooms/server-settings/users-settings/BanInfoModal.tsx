@@ -1,7 +1,6 @@
 import { CustomBottomSheet } from "@/components/CustomBottomSheet";
 import { Button } from "@/components/ui/Button";
 import { TextMd } from "@/lib/typography";
-import React, { useState } from "react";
 import { View } from "react-native";
 import {
   BannedUser,
@@ -11,7 +10,6 @@ import {
   UnbanUserInput,
 } from "@/generated/graphql";
 import { formatDate } from "@/helpers/Date";
-import { ConfirmationButtons } from "@/components/custom/ConfirmationButtons";
 import { useBottomSheetModal } from "@gorhom/bottom-sheet";
 import { useRoomStore } from "../../store";
 import { useMutation } from "@tanstack/react-query";
@@ -22,7 +20,6 @@ import { queryKeys } from "@/lib/react-query/queryKeys";
 import { handleGraphqlError } from "@/helpers/GraphqlCatchError";
 
 export const BanInfoModal = ({ user }: { user?: BannedUser | null }) => {
-  const [value, setValue] = useState("kick");
   const { dismissAll } = useBottomSheetModal();
 
   const { activeServer } = useRoomStore();
@@ -72,6 +69,12 @@ export const BanInfoModal = ({ user }: { user?: BannedUser | null }) => {
             <TextMd>More info</TextMd>
           </Button>
         )}
+        actionButtons={{
+          confirm: {
+            text: `Unban ${user?.user.username}`,
+            action: handleUnban,
+          },
+        }}
       >
         <View className="flex-1 justify-center px-2 gap-4">
           <TextMd className="font-semibold">
@@ -81,11 +84,6 @@ export const BanInfoModal = ({ user }: { user?: BannedUser | null }) => {
             Ban date: {formatDate(user?.dateCreated)}
           </TextMd>
           <TextMd className="font-semibold">Reason: {user?.reason}</TextMd>
-          <ConfirmationButtons
-            submitText={`Unban ${user?.user.username}`}
-            submit={handleUnban}
-            cancel={dismissAll}
-          />
         </View>
       </CustomBottomSheet>
     </View>

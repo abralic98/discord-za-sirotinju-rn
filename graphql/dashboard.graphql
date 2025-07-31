@@ -153,3 +153,14 @@ mutation deleteServer($serverId: ID!) {
 mutation generateInviteLink($serverId: ID!) {
   generateInviteLink(serverId: $serverId)
 }
+
+mutation createServer($server: CreateServerInput) {
+  createServer(server: $server) {
+    id
+    name
+    serverImg
+    createdBy {
+      id
+    }
+  }
+}
