@@ -590,6 +590,48 @@ export type GetServerByIdQueryVariables = Exact<{
 
 export type GetServerByIdQuery = { __typename?: 'Query', getServerById?: { __typename?: 'Server', id?: string | null, name?: string | null, description?: string | null, publicServer?: boolean | null, serverImg?: string | null, banner?: string | null, joinedUsers?: Array<{ __typename?: 'User', id?: string | null, username?: string | null, avatar?: string | null, userPresence?: UserPresenceType | null } | null> | null, createdBy?: { __typename?: 'User', id?: string | null } | null } | null };
 
+export type KickUserFromServerMutationVariables = Exact<{
+  input?: InputMaybe<KickUserInput>;
+}>;
+
+
+export type KickUserFromServerMutation = { __typename?: 'Mutation', kickUserFromServer?: boolean | null };
+
+export type BanUserFromServerMutationVariables = Exact<{
+  input?: InputMaybe<BanUserInput>;
+}>;
+
+
+export type BanUserFromServerMutation = { __typename?: 'Mutation', banUserFromServer?: boolean | null };
+
+export type GetBannedUsersByServerIdQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type GetBannedUsersByServerIdQuery = { __typename?: 'Query', getBannedUsersByServerId?: Array<{ __typename?: 'BannedUser', reason: string, dateCreated?: string | null, dateUpdated?: string | null, user: { __typename?: 'User', id?: string | null, username?: string | null, avatar?: string | null }, banAuthor: { __typename?: 'User', id?: string | null, username?: string | null, avatar?: string | null } } | null> | null };
+
+export type UnbanUserFromServerMutationVariables = Exact<{
+  input?: InputMaybe<UnbanUserInput>;
+}>;
+
+
+export type UnbanUserFromServerMutation = { __typename?: 'Mutation', unbanUserFromServer?: boolean | null };
+
+export type DeleteServerMutationVariables = Exact<{
+  serverId: Scalars['ID']['input'];
+}>;
+
+
+export type DeleteServerMutation = { __typename?: 'Mutation', deleteServer?: boolean | null };
+
+export type GenerateInviteLinkMutationVariables = Exact<{
+  serverId: Scalars['ID']['input'];
+}>;
+
+
+export type GenerateInviteLinkMutation = { __typename?: 'Mutation', generateInviteLink?: string | null };
+
 export type GetAllServersQueryVariables = Exact<{
   page: Scalars['Int']['input'];
   size: Scalars['Int']['input'];
@@ -984,6 +1026,141 @@ export const useGetServerByIdQuery = <
     return useQuery<GetServerByIdQuery, TError, TData>(
       ['getServerById', variables],
       fetcher<GetServerByIdQuery, GetServerByIdQueryVariables>(dataSource.endpoint, dataSource.fetchParams || {}, GetServerByIdDocument, variables),
+      options
+    )};
+
+export const KickUserFromServerDocument = `
+    mutation kickUserFromServer($input: KickUserInput) {
+  kickUserFromServer(input: $input)
+}
+    `;
+
+export const useKickUserFromServerMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      dataSource: { endpoint: string, fetchParams?: RequestInit },
+      options?: UseMutationOptions<KickUserFromServerMutation, TError, KickUserFromServerMutationVariables, TContext>
+    ) => {
+    
+    return useMutation<KickUserFromServerMutation, TError, KickUserFromServerMutationVariables, TContext>(
+      ['kickUserFromServer'],
+      (variables?: KickUserFromServerMutationVariables) => fetcher<KickUserFromServerMutation, KickUserFromServerMutationVariables>(dataSource.endpoint, dataSource.fetchParams || {}, KickUserFromServerDocument, variables)(),
+      options
+    )};
+
+export const BanUserFromServerDocument = `
+    mutation banUserFromServer($input: BanUserInput) {
+  banUserFromServer(input: $input)
+}
+    `;
+
+export const useBanUserFromServerMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      dataSource: { endpoint: string, fetchParams?: RequestInit },
+      options?: UseMutationOptions<BanUserFromServerMutation, TError, BanUserFromServerMutationVariables, TContext>
+    ) => {
+    
+    return useMutation<BanUserFromServerMutation, TError, BanUserFromServerMutationVariables, TContext>(
+      ['banUserFromServer'],
+      (variables?: BanUserFromServerMutationVariables) => fetcher<BanUserFromServerMutation, BanUserFromServerMutationVariables>(dataSource.endpoint, dataSource.fetchParams || {}, BanUserFromServerDocument, variables)(),
+      options
+    )};
+
+export const GetBannedUsersByServerIdDocument = `
+    query getBannedUsersByServerId($id: ID!) {
+  getBannedUsersByServerId(id: $id) {
+    user {
+      id
+      username
+      avatar
+    }
+    reason
+    dateCreated
+    dateUpdated
+    banAuthor {
+      id
+      username
+      avatar
+    }
+  }
+}
+    `;
+
+export const useGetBannedUsersByServerIdQuery = <
+      TData = GetBannedUsersByServerIdQuery,
+      TError = unknown
+    >(
+      dataSource: { endpoint: string, fetchParams?: RequestInit },
+      variables: GetBannedUsersByServerIdQueryVariables,
+      options?: UseQueryOptions<GetBannedUsersByServerIdQuery, TError, TData>
+    ) => {
+    
+    return useQuery<GetBannedUsersByServerIdQuery, TError, TData>(
+      ['getBannedUsersByServerId', variables],
+      fetcher<GetBannedUsersByServerIdQuery, GetBannedUsersByServerIdQueryVariables>(dataSource.endpoint, dataSource.fetchParams || {}, GetBannedUsersByServerIdDocument, variables),
+      options
+    )};
+
+export const UnbanUserFromServerDocument = `
+    mutation unbanUserFromServer($input: UnbanUserInput) {
+  unbanUserFromServer(input: $input)
+}
+    `;
+
+export const useUnbanUserFromServerMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      dataSource: { endpoint: string, fetchParams?: RequestInit },
+      options?: UseMutationOptions<UnbanUserFromServerMutation, TError, UnbanUserFromServerMutationVariables, TContext>
+    ) => {
+    
+    return useMutation<UnbanUserFromServerMutation, TError, UnbanUserFromServerMutationVariables, TContext>(
+      ['unbanUserFromServer'],
+      (variables?: UnbanUserFromServerMutationVariables) => fetcher<UnbanUserFromServerMutation, UnbanUserFromServerMutationVariables>(dataSource.endpoint, dataSource.fetchParams || {}, UnbanUserFromServerDocument, variables)(),
+      options
+    )};
+
+export const DeleteServerDocument = `
+    mutation deleteServer($serverId: ID!) {
+  deleteServer(serverId: $serverId)
+}
+    `;
+
+export const useDeleteServerMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      dataSource: { endpoint: string, fetchParams?: RequestInit },
+      options?: UseMutationOptions<DeleteServerMutation, TError, DeleteServerMutationVariables, TContext>
+    ) => {
+    
+    return useMutation<DeleteServerMutation, TError, DeleteServerMutationVariables, TContext>(
+      ['deleteServer'],
+      (variables?: DeleteServerMutationVariables) => fetcher<DeleteServerMutation, DeleteServerMutationVariables>(dataSource.endpoint, dataSource.fetchParams || {}, DeleteServerDocument, variables)(),
+      options
+    )};
+
+export const GenerateInviteLinkDocument = `
+    mutation generateInviteLink($serverId: ID!) {
+  generateInviteLink(serverId: $serverId)
+}
+    `;
+
+export const useGenerateInviteLinkMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      dataSource: { endpoint: string, fetchParams?: RequestInit },
+      options?: UseMutationOptions<GenerateInviteLinkMutation, TError, GenerateInviteLinkMutationVariables, TContext>
+    ) => {
+    
+    return useMutation<GenerateInviteLinkMutation, TError, GenerateInviteLinkMutationVariables, TContext>(
+      ['generateInviteLink'],
+      (variables?: GenerateInviteLinkMutationVariables) => fetcher<GenerateInviteLinkMutation, GenerateInviteLinkMutationVariables>(dataSource.endpoint, dataSource.fetchParams || {}, GenerateInviteLinkDocument, variables)(),
       options
     )};
 

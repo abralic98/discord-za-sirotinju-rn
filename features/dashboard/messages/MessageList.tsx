@@ -27,7 +27,6 @@ export const MessageList = () => {
       id: activeRoom?.id,
     },
   });
-  console.log(messages);
 
   useRoomConnection((newMessage) => {
     setMessages((prev) => [...prev, newMessage]);

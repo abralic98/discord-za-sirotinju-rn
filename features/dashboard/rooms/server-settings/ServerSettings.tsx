@@ -11,6 +11,8 @@ import { TextLg } from "@/lib/typography";
 import { EditServerIcon } from "./EditServerIcon";
 import { EditServerBanner } from "./EditServerBanner";
 import { UserList } from "./users-settings/UserList";
+import { BannedUserList } from "./users-settings/BannedUserList";
+import { ServerAdministration } from "./administration/ServerAdministration";
 
 export const ServerSettings = () => {
   const { activeServer } = useRoomStore();
@@ -37,6 +39,8 @@ export const ServerSettings = () => {
       <EditServerIcon server={data} />
       <EditServerBanner server={data} />
       <UserList server={data} />
+      <BannedUserList server={data} />
+      <ServerAdministration server={data}/>
     </View>
   );
 };

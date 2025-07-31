@@ -44,11 +44,9 @@ export const useCloudStorage = ({
           fileObject,
           [],
           (prog: { progress: number }) => {
-            console.log("Upload progress:", prog.progress);
             setProgress && setProgress(prog.progress / 100);
           },
         );
-        console.log("jel uslo", response);
 
         if (response.$id) {
           const fileUrl = storageClient.getFileViewURL(bucketId, response.$id); // ✅

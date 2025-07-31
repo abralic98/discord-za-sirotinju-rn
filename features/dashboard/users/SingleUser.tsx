@@ -11,10 +11,9 @@ interface Props {
   serverOwnerId?: string | null;
 }
 export const SingleUser = ({ user, serverOwnerId }: Props) => {
-  const {user: currentUser} = useAuthStore()
+  const { user: currentUser } = useAuthStore();
+  console.log(currentUser ,'jebeni current');
   if (!user) return null;
-  console.log(user.id, "user");
-  console.log(serverOwnerId, "server");
   return (
     <View className="flex-row  items-center justify-between">
       <View className="flex-row gap-4 items-center">

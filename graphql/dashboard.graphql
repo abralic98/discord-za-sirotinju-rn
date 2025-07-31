@@ -3,7 +3,7 @@ query getAllUserServers {
     id
     name
     serverImg
-    createdBy{
+    createdBy {
       id
     }
   }
@@ -87,8 +87,8 @@ query getServerUsers($id: ID!) {
   }
 }
 
-mutation updateServer($server: UpdateServerInput){
-  updateServer(server: $server){
+mutation updateServer($server: UpdateServerInput) {
+  updateServer(server: $server) {
     id
     name
     description
@@ -115,4 +115,41 @@ query getServerById($id: ID!) {
       id
     }
   }
+}
+
+mutation kickUserFromServer($input: KickUserInput) {
+  kickUserFromServer(input: $input)
+}
+
+mutation banUserFromServer($input: BanUserInput) {
+  banUserFromServer(input: $input)
+}
+query getBannedUsersByServerId($id: ID!) {
+  getBannedUsersByServerId(id: $id) {
+    user {
+      id
+      username
+      avatar
+    }
+    reason
+    dateCreated
+    dateUpdated
+    banAuthor {
+      id
+      username
+      avatar
+    }
+  }
+}
+
+mutation unbanUserFromServer($input: UnbanUserInput) {
+  unbanUserFromServer(input: $input)
+}
+
+mutation deleteServer($serverId: ID!) {
+  deleteServer(serverId: $serverId)
+}
+
+mutation generateInviteLink($serverId: ID!) {
+  generateInviteLink(serverId: $serverId)
 }

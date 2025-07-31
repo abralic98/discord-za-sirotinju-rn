@@ -9,14 +9,13 @@ import { queryClient } from "@/lib/react-query/queryClient";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { TransitionPresets } from "@react-navigation/bottom-tabs";
 
 export default function RootLayout() {
   return (
-    <GestureHandlerRootView style={{ flex: 1, backgroundColor: "gray" }}>
-      <BottomSheetModalProvider>
-        <SafeAreaProvider>
-          <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <GestureHandlerRootView style={{ flex: 1, backgroundColor: "gray" }}>
+        <BottomSheetModalProvider>
+          <SafeAreaProvider>
             <ThemeProvider value={DarkTheme}>
               <Stack
                 screenOptions={{
@@ -25,9 +24,9 @@ export default function RootLayout() {
               />
               <Toast />
             </ThemeProvider>
-          </QueryClientProvider>
-        </SafeAreaProvider>
-      </BottomSheetModalProvider>
-    </GestureHandlerRootView>
+          </SafeAreaProvider>
+        </BottomSheetModalProvider>
+      </GestureHandlerRootView>
+    </QueryClientProvider>
   );
 }

@@ -20,7 +20,7 @@ export const SingleUser = ({ user }: { user?: User | null }) => {
         {user.id !== currentUser?.id && (
           <MailIcon className="w-10 h-10 text-slate-500" />
         )}
-        <UserActions/>
+        {currentUser?.id !== user.id && <UserActions user={user} />}
       </View>
     </View>
   );

@@ -9,7 +9,6 @@ import {
 
 export default function TabLayout() {
   const { user } = useAuthStore();
-  console.log(user, "user");
   const getColorClass = (color: string) => {
     switch (color) {
       case "white":

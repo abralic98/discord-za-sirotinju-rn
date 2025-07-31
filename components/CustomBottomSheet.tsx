@@ -41,7 +41,7 @@ export const CustomBottomSheet: React.FC<CustomBottomSheetProps> = ({
         enablePanDownToClose
         keyboardBehavior="extend"
         keyboardBlurBehavior="restore"
-        backgroundStyle={{ backgroundColor: "#272d38" }}
+        backgroundStyle={{ backgroundColor: "#212122" }}
         handleIndicatorStyle={{ backgroundColor: "white" }}
       >
         <BottomSheetView style={styles.content}>

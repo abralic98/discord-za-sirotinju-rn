@@ -7,56 +7,35 @@ import { DefaultCard } from "@/components/custom/DefaultCard";
 import { TextLg } from "@/lib/typography";
 
 export const UserList = ({ server }: { server?: Server | null }) => {
-  const users: User[] = [
-    {
-      username: "kita",
-      id: "1",
-    },
-    {
-      username: "kita2",
-      id: "2",
-    },
-    {
-      username: "kita3",
-      id: "3",
-    },
-    {
-      username: "kita4",
-      id: "4",
-    },
-    {
-      username: "kita5",
-      id: "5",
-    },
-    {
-      username: "kita6",
-      id: "6",
-    },
-    {
-      username: "kita7",
-      id: "7",
-    },
-    {
-      username: "kita5",
-      id: "8",
-    },
-    {
-      username: "kita6",
-      id: "9",
-    },
-    {
-      username: "kita7",
-      id: "17",
-    },
-  ];
+  //tailwind not workiing for some reason temporary
+  const getHeight = () => {
+    switch (server?.joinedUsers?.length) {
+      case 1:
+        return 60;
+      case 2:
+        return 120;
+
+      case 3:
+        return 180;
+
+      case 4:
+        return 240;
+
+      case 5:
+        return 320;
+
+      default:
+        return 380;
+    }
+  };
   return (
     <DefaultCard>
-      <TextLg>Server users</TextLg>
-      <View className="w-full h-80">
+      <TextLg>Server users ({`${server?.joinedUsers?.length}`})</TextLg>
+      <View className="w-full" style={{ height: getHeight() }}>
         <FlashList
-          data={users}
+          data={server?.joinedUsers}
           estimatedItemSize={60}
-          keyExtractor={(item) => String(item.id)}
+          keyExtractor={(item) => String(item?.id)}
           renderItem={({ item }) => <SingleUser user={item} />}
         />
       </View>

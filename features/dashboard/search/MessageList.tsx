@@ -20,7 +20,6 @@ export const MessageList = () => {
   const form = useFormContext();
   const search = form.watch("search");
   const filter = form.watch("filter");
-  console.log(filter);
 
   const query = usePagination<GetMessagesByRoomIdQuery, "getMessagesByRoomId">({
     queryKey: [queryKeys.getSearchedMessagesByRoomId, activeRoom?.id],
