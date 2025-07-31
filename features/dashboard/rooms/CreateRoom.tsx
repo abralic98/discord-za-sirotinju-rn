@@ -21,9 +21,11 @@ import { TextMd } from "@/lib/typography";
 import { CustomBottomSheet } from "@/components/CustomBottomSheet";
 import { FormSwitch } from "@/components/form/FormSwitch";
 import { FormInputBottomSheet } from "@/components/input/FormInputBottomSheet";
+import { useBottomSheetModal } from "@gorhom/bottom-sheet";
 
 export const CreateRoom = () => {
   const { activeServer } = useRoomStore();
+  const { dismissAll } = useBottomSheetModal();
 
   const form = useForm({
     resolver: zodResolver(createRoomSchema),
@@ -45,6 +47,7 @@ export const CreateRoom = () => {
       queryClient.refetchQueries({
         queryKey: [queryKeys.getRoomsByServerId, activeServer?.id],
       });
+      dismissAll();
       form.reset();
     },
     onError: (error) => {
@@ -73,7 +76,10 @@ export const CreateRoom = () => {
         </Button>
       )}
       actionButtons={{
-        confirm: form.handleSubmit(onSubmit),
+        confirm: {
+          action: form.handleSubmit(onSubmit),
+          text: "Create room",
+        },
       }}
     >
       <FormProvider {...form}>

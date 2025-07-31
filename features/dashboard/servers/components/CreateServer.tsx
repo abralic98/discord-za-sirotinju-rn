@@ -20,6 +20,7 @@ import { TextLg, TextMd } from "@/lib/typography";
 import { Pressable, View } from "react-native";
 import { CustomBottomSheet } from "@/components/CustomBottomSheet";
 import { PlusIcon } from "lucide-nativewind";
+import { useBottomSheetModal } from "@gorhom/bottom-sheet";
 
 export const CreateServer = () => {
   const form = useForm<CreateServerInput>({
@@ -29,6 +30,7 @@ export const CreateServer = () => {
     },
   });
   const { setActiveServer } = useRoomStore();
+  const {dismissAll} = useBottomSheetModal()
 
   const createServerMutation = useMutation({
     mutationFn: async (data: CreateServerInput) => {
@@ -47,6 +49,7 @@ export const CreateServer = () => {
         queryKey: [queryKeys.getAllUserServers],
       });
       setActiveServer(data.createServer);
+      dismissAll()
     },
     onError: (error) => {
       handleGraphqlError(error);

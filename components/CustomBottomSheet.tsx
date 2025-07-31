@@ -69,7 +69,6 @@ export const CustomBottomSheet: React.FC<CustomBottomSheetProps> = ({
                   className="min-w-[150px]"
                   onPress={() => {
                     actionButtons.confirm.action();
-                    close();
                   }}
                 >
                   <TextMd>{actionButtons.confirm.text ?? "Submit"}</TextMd>
