@@ -1,3 +1,4 @@
+import { UserAvatar } from "@/components/UserAvatar";
 import { useAuthStore } from "@/features/auth/store";
 import { cn } from "@/lib/utils";
 import { Tabs } from "expo-router";
@@ -29,6 +30,9 @@ export default function TabLayout() {
           fontSize: 14,
           fontWeight: "600",
         },
+        tabBarStyle: {
+          paddingTop: 8,
+        },
       }}
     >
       <Tabs.Screen
@@ -54,10 +58,17 @@ export default function TabLayout() {
       <Tabs.Screen
         name="settings/index"
         options={{
-          title: "Settings",
-          tabBarIcon: ({ color }) => (
-            <SettingsIcon className={cn("w-7 h-7", getColorClass(color))} />
-          ),
+          title: "You",
+          tabBarIcon: ({ color }) => {
+            return (
+              <UserAvatar
+                className="w-8 h-8"
+                presenceClassName="w-3 h-3"
+                withPresence={true}
+                user={user}
+              />
+            );
+          },
         }}
       />
     </Tabs>

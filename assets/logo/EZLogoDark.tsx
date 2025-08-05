@@ -2,7 +2,12 @@ import React from "react";
 import Svg, { Rect, Path, Circle, SvgProps } from "react-native-svg";
 
 const EZLogoDark = (props: SvgProps) => (
-  <Svg width={100} height={100} viewBox="0 0 100 100" {...props}>
+  <Svg
+    width={props.width ?? 100}
+    height={props.width ?? 100}
+    viewBox="0 0 100 100"
+    {...props}
+  >
     <Rect width={98} height={98} x={1} y={1} fill="#333" rx={10} />
     <Path
       fill="none"

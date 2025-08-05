@@ -6,7 +6,11 @@ import { FormInput } from "@/components/input/FormInput";
 import { MessageList } from "./MessageList";
 
 export const SearchRoom = () => {
-  const form = useForm();
+  const form = useForm({
+    defaultValues: {
+      filter: "message",
+    },
+  });
   return (
     <View>
       <FormProvider {...form}>
