@@ -13,7 +13,7 @@ export default function Index() {
     if (!isLoading) {
       const timeout = setTimeout(() => {
         setShowSplash(false);
-        router.replace(isAuthorized ? routes.dashboard : routes.login);
+        router.replace(isAuthorized ? routes.dashboard : routes.loginType);
       }, 1000);
 
       return () => clearTimeout(timeout);

@@ -4,6 +4,7 @@ const settings = "/settings" as const;
 
 const routes = {
   home: "/" as const,
+  loginType: `${auth}/login-type` as const,
   login: `${auth}/login` as const,
   register: `${auth}/register` as const,
   dashboard: `${tabs}/dashboard` as const,
