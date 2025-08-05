@@ -1,0 +1,17 @@
+mutation UpdateUser($user: UpdateUserInput) {
+  updateUser(user: $user) {
+    id
+  }
+}
+
+mutation UpdateUserPassword($credentials: UpdateUserPasswordInput) {
+  updateUserPassword(credentials: $credentials) {
+    id
+  }
+}
+
+mutation deactivateUser($password: String!, $confirmPassword: String!) {
+  deactivateUser(password: $password, confirmPassword: $confirmPassword) {
+    id
+  }
+}

@@ -46,7 +46,7 @@ const Input = React.forwardRef<TextInput, RNInputProps>(
             onPress={() => setSecured(!secured)}
             className="absolute right-3 top-1/2 -translate-y-1/2"
           >
-            {secured ? (
+            {!secured ? (
               <EyeIcon size={20} className="text-white" />
             ) : (
               <EyeOffIcon size={20} className="text-white" />

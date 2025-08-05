@@ -59,7 +59,7 @@ export const DeleteServer = ({ server }: { server: Server | null }) => {
           text: "Confirm",
           style: "destructive",
           onPress: () => {
-            deleteServerMutation.mutate();
+            deleteServerMutation.mutateAsync();
           },
         },
       ],

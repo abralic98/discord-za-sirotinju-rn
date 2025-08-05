@@ -1,4 +1,3 @@
-import { DefaultCard } from "@/components/custom/DefaultCard";
 import { Button } from "@/components/ui/Button";
 import { useAuthStore } from "@/features/auth/store";
 import { MemberSince } from "@/features/settings/landing/MemberSince";
@@ -12,7 +11,7 @@ import { View } from "react-native";
 
 export default function SettingsPage() {
   const { clearAuth, user } = useAuthStore();
-  const { replace } = useRouter();
+  const { replace, push } = useRouter();
 
   const logout = () => {
     clearAuth();
@@ -27,13 +26,20 @@ export default function SettingsPage() {
         <TextMd>{user?.description}</TextMd>
         <MemberSince date={user?.dateCreated} />
         <YourFriends />
-        <Button className="flex flex-row gap-4 rounded-2xl">
+        <Button
+          onPress={() => push(routes.expandedSettings)}
+          className="flex flex-row gap-4 rounded-2xl"
+        >
           <SettingsIcon className="text-white" />
           <TextMd className="font-semibold">Settings</TextMd>
         </Button>
       </View>
       <View className="gap-4 absolute bottom-1 left-0 w-full p-4">
-        <Button variant={'destructive'} className="flex flex-row gap-4 rounded-2xl  w-full">
+        <Button
+          onPress={logout}
+          variant={"destructive"}
+          className="flex flex-row gap-4 rounded-2xl  w-full"
+        >
           <LogOutIcon className="text-white" />
           <TextMd className="font-semibold">Logout</TextMd>
         </Button>

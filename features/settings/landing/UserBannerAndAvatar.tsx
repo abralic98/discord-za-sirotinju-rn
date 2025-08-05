@@ -21,7 +21,7 @@ export const UserBannerAndAvatar = () => {
       );
     } else {
       return (
-        <View className="w-full h-44 bg-dark-active-server items-center justify-end pb-4">
+        <View className="w-full h-44 bg-dark-active-server items-center justify-end pb-6">
           <EZLogoDark width={70} height={70} />
         </View>
       );

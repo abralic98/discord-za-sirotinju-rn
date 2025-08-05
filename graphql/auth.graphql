@@ -8,6 +8,8 @@ mutation CreateSession($credentials: CreateSessionInput!) {
       avatar
       userPresence
       dateCreated
+      description
+      phoneNumber
     }
   }
 }
@@ -18,17 +20,6 @@ mutation CreateUser($user: CreateUserInput!) {
   }
 }
 
-mutation UpdateUser($user: UpdateUserInput) {
-  updateUser(user: $user) {
-    id
-  }
-}
-
-mutation UpdateUserPassword($credentials: UpdateUserPasswordInput) {
-  updateUserPassword(credentials: $credentials) {
-    id
-  }
-}
 
 query meQuery {
   meQuery {

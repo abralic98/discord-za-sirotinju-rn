@@ -22,6 +22,21 @@ export const TextMd = ({ children, className, ...rest }: CustomTextProps) => {
   );
 };
 
+export const TextLabel = ({
+  children,
+  className,
+  ...rest
+}: CustomTextProps) => {
+  return (
+    <Text
+      className={cn("text-white font-semibold opacity-60", className)}
+      {...rest}
+    >
+      {children}
+    </Text>
+  );
+};
+
 export const TextLg = ({ children, className, ...rest }: CustomTextProps) => {
   return (
     <Text
