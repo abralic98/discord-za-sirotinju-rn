@@ -38,7 +38,7 @@ function TabsTrigger({
     >
       <TabsPrimitive.Trigger
         className={cn(
-          "min-w-[100] items-center justify-center shadow-none rounded-lg px-3 py-1.5 text-md bg-dark-server border border-dark-border",
+          "min-w-[100]items-center justify-center shadow-none rounded-lg px-3 py-1.5 text-md bg-dark-server border border-dark-border",
           props.disabled && "opacity-50",
           props.value === value &&
             cn("shadow-lg shadow-foreground/10", className),

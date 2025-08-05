@@ -33,9 +33,7 @@ export const UserActions = ({ user }: { user?: User | null }) => {
               <KickUser user={user} />
             </TabsContent>
             <TabsContent value="ban">
-              <TabsContent value="ban">
-                <BanUser user={user} />
-              </TabsContent>
+              <BanUser user={user} />
             </TabsContent>
           </Tabs>
         </View>

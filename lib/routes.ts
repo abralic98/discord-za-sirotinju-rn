@@ -12,7 +12,7 @@ const routes = {
   expandedSettings: `${settings}/expanded-settings` as const,
   accountSettings: `${settings}/expanded-settings/account` as const,
   notificationSettings: `${settings}/expanded-settings/notifications` as const,
-  voice: `${settings}/voice` as const,
+  biometricSettings: `${settings}/expanded-settings/biometrics` as const,
   discover: `/discover` as const,
   serverSettings: `${tabs}/dashboard/server-settings` as const,
   dm: `/dm` as const,

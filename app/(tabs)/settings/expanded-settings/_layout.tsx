@@ -34,6 +34,13 @@ export default function ExpandedSettingsLayout() {
           headerBackTitle: "Settings",
         }}
       />
+      <Stack.Screen
+        name="biometrics/index"
+        options={{
+          title: "Biometrics",
+          headerBackTitle: "Settings",
+        }}
+      />
     </Stack>
   );
 }

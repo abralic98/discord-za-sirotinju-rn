@@ -37,6 +37,9 @@ export const LoginForm = () => {
     onSuccess: (res) => {
       if (res.createSession?.token && res.createSession.user) {
         setAuth(res.createSession.token, res.createSession.user);
+        saveToStorage(StorageKeys.USERNAME, form.getValues("username"));
+        saveToStorage(StorageKeys.PASSWORD, form.getValues("password"));
+
         showSuccess({ title: "Login" });
         replace(routes.dashboard);
       }

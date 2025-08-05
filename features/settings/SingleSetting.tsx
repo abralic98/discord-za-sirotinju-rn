@@ -1,4 +1,3 @@
-import routes from "@/lib/routes";
 import { TextMd } from "@/lib/typography";
 import { RelativePathString, useRouter } from "expo-router";
 import React, { ReactNode } from "react";

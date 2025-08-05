@@ -3,7 +3,7 @@ import React from "react";
 import { View } from "react-native";
 import { SingleSetting } from "./SingleSetting";
 import routes from "@/lib/routes";
-import { BellIcon, UserIcon } from "lucide-nativewind";
+import { BellIcon, FingerprintIcon, UserIcon } from "lucide-nativewind";
 
 export const SettingsList = () => {
   return (
@@ -19,6 +19,11 @@ export const SettingsList = () => {
         icon={<BellIcon className="text-white" />}
         name="Notifications"
         route={routes.notificationSettings}
+      />
+      <SingleSetting
+        icon={<FingerprintIcon className="text-white" />}
+        name="Biometrics"
+        route={routes.biometricSettings}
       />
     </View>
   );
