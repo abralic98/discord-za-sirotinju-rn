@@ -15,7 +15,7 @@ export default function SettingsPage() {
 
   const logout = () => {
     clearAuth();
-    replace(routes.login);
+    replace(routes.loginType);
   };
 
   return (
