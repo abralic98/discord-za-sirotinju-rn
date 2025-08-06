@@ -84,6 +84,7 @@ export const BasicInfo = ({ server }: { server?: Server | null }) => {
         <FormInput name="name" label="Server name" />
         <FormTextArea name="description" label="Server description" />
         <ConfirmationButtons
+          loading={updateServer.isPending}
           cancel={() => form.reset()}
           submit={form.handleSubmit(submit)}
         />

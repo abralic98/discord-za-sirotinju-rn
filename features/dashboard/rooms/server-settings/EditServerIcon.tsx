@@ -133,6 +133,7 @@ export const EditServerIcon = ({ server }: { server?: Server | null }) => {
         </View>
         {image && (
           <ConfirmationButtons
+            loading={isLoading}
             cancel={() => setImage(null)}
             submit={() => setImageAsset(image)}
             submitText="Upload"

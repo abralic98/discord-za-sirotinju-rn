@@ -35,6 +35,7 @@ export const JoinServer = ({ server }: { server: Server }) => {
       if (data.joinServer?.id) {
         showSuccess({ title: `Welcome to ${data.joinServer.name}` });
         setActiveServer(data.joinServer);
+        queryClient.refetchQueries({ queryKey: [queryKeys.getAllUserServers] });
         queryClient.refetchQueries({ queryKey: [queryKeys.getAllServers] });
         push(routes.dashboard);
       }

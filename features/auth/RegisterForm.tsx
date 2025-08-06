@@ -2,50 +2,45 @@ import { FormInput } from "@/components/input/FormInput";
 import { KeyboardAvoidingWrapper } from "@/components/KeyboardAvoidingWrapper";
 import { Button } from "@/components/ui/Button";
 import {
-  CreateSessionDocument,
-  CreateSessionInput,
-  CreateSessionMutation,
-  MutationCreateSessionArgs,
+  CreateUserDocument,
+  CreateUserInput,
+  CreateUserMutation,
+  CreateUserMutationVariables,
 } from "@/generated/graphql";
 import { handleGraphqlError } from "@/helpers/GraphqlCatchError";
 import { showSuccess } from "@/helpers/Toast";
 import { publicClient } from "@/lib/graphql/client";
 import routes from "@/lib/routes";
-import { saveToStorage } from "@/lib/secure-storage/storage";
-import { StorageKeys } from "@/lib/secure-storage/storageKeys";
 import { TextSm } from "@/lib/typography";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { View } from "react-native";
-import { useAuthStore } from "./store";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema } from "./zod";
+import { registerSchema } from "./zod";
 
-export const LoginForm = () => {
-  const form = useForm<CreateSessionInput>({
-    resolver: zodResolver(loginSchema),
+export interface CreateUserInputModified extends CreateUserInput {
+  confirmPassword: string;
+}
+
+export const RegisterForm = () => {
+  const form = useForm<CreateUserInputModified>({
+    resolver: zodResolver(registerSchema),
   });
   const { replace } = useRouter();
-  const { setAuth } = useAuthStore();
 
   const createSessionMutation = useMutation({
-    mutationFn: async (data: CreateSessionInput) => {
-      const modifiedData: MutationCreateSessionArgs = { credentials: data };
-      return publicClient.request<CreateSessionMutation>(
-        CreateSessionDocument,
-        modifiedData,
-      );
+    mutationFn: async (data: CreateUserInputModified) => {
+      const { confirmPassword, ...rest } = data;
+      return publicClient.request<CreateUserMutation>(CreateUserDocument, {
+        user: rest,
+      });
     },
     onSuccess: (res) => {
-      if (res.createSession?.token && res.createSession.user) {
-        setAuth(res.createSession.token, res.createSession.user);
-        saveToStorage(StorageKeys.USERNAME, form.getValues("username"));
-        saveToStorage(StorageKeys.PASSWORD, form.getValues("password"));
-
-        showSuccess({ title: "Login" });
-        replace(routes.dashboard);
+      if (res.createUser) {
+        showSuccess({ title: "Success" });
+        replace(routes.login);
       }
     },
     onError: (error) => {
@@ -53,20 +48,33 @@ export const LoginForm = () => {
     },
   });
 
-  const onSubmit = async (data: CreateSessionInput) => {
+  const onSubmit = async (data: CreateUserInputModified) => {
     createSessionMutation.mutateAsync(data);
   };
 
   return (
-    <KeyboardAvoidingWrapper keyboardVerticalOffset={360}>
+    <KeyboardAvoidingWrapper keyboardVerticalOffset={260}>
       <FormProvider {...form}>
         <View className="flex flex-col h-full justify-between">
           <View className="gap-4">
-            <FormInput<CreateSessionInput> label="Username" name="username" />
-            <FormInput<CreateSessionInput>
+            <FormInput<CreateUserInputModified>
+              label="Username"
+              name="username"
+            />
+            <FormInput<CreateUserInputModified>
+              label="Email"
+              keyboardType="email-address"
+              name="email"
+            />
+            <FormInput<CreateUserInputModified>
               secure={true}
               label="Password"
               name="password"
+            />
+            <FormInput<CreateUserInputModified>
+              secure={true}
+              label="Confirm Password"
+              name="confirmPassword"
             />
           </View>
           <Button onPress={form.handleSubmit(onSubmit)}>
