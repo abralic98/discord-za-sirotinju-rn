@@ -18,7 +18,12 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.anonymous.discordzasirotinjurn"
+      "package": "com.anonymous.discordzasirotinjurn",
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.USE_BIOMETRIC",
+        "android.permission.USE_FINGERPRINT"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -36,7 +41,7 @@
             "image": "./assets/images/splash.png",
             "backgroundColor": "#000000"
           },
-          "imageWidth": 300
+          "imageWidth": 250
         }
       ],
       [
@@ -54,6 +59,13 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "f6617e17-47ae-4fe8-92d0-b29eef605037"
+      }
+    },
+    "owner": "abralic98"
   }
 }

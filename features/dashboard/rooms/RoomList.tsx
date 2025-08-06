@@ -54,7 +54,7 @@ export const RoomList = () => {
         <TextXl3
           ellipsizeMode="tail"
           numberOfLines={2}
-          className="font-bold max-w-[50%]"
+          className="font-bold max-w-[45%]"
         >
           {activeServer.name}
         </TextXl3>

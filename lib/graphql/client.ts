@@ -3,8 +3,11 @@ import { GraphqlCatchError } from "@/helpers/GraphqlCatchError";
 import { getFromStorage } from "../secure-storage/storage";
 import { StorageKeys } from "../secure-storage/storageKeys";
 
-export const apiUrl = "http://localhost:8080/graphql";
-export const wsUrl = "ws://localhost:8080/graphql";
+// export const apiUrl = "http://localhost:8080/graphql";
+export const apiUrl = "http://192.168.1.93:8080/graphql";
+
+// export const wsUrl = "ws://localhost:8080/graphql";
+export const wsUrl = "ws://192.168.1.93:8080/graphql";
 
 export const requestWithAuth = async <T>(
   query: string,
