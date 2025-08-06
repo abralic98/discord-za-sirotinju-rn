@@ -4,4 +4,5 @@ export enum StorageKeys {
   PASSWORD = "password",
   BIOMETRICTYPE = "biometricType",
   ISBIOMETRICACTIVE = "isBiometricActive",
+  FCMTOKEN = "fcmToken"
 }

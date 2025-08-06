@@ -3,6 +3,8 @@ import { initializeApp } from "firebase/app";
 import messaging from "@react-native-firebase/messaging";
 import { useEffect } from "react";
 import { PermissionsAndroid, Platform } from "react-native";
+import { saveToStorage } from "@/lib/secure-storage/storage";
+import { StorageKeys } from "@/lib/secure-storage/storageKeys";
 
 export const useFirebase = () => {
   const app = initializeApp(firebaseConfig);
@@ -29,6 +31,7 @@ export const useFirebase = () => {
     try {
       const token = await messaging().getToken();
       if (token) {
+        saveToStorage(StorageKeys.FCMTOKEN, token)
         console.log("FCM Token:", token);
       } else {
         console.log("Failed to get FCM token");
