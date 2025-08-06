@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "845142702263",
+    "project_id": "diskord-za-sirotinju",
+    "storage_bucket": "diskord-za-sirotinju.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:845142702263:android:a5254ccdf4b626f206b532",
+        "android_client_info": {
+          "package_name": "com.abralic98.diskordzasirotinju"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBS47U4NcOOWYVS1DEvL_KyxhB-tka0EOk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
