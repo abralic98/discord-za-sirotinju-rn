@@ -3,6 +3,7 @@ import { createClient, Client } from "graphql-ws";
 import { useAuthStore } from "@/features/auth/store";
 import { useRoomStore } from "../../rooms/store";
 import { SubscribeToMessagesByRoomIdDocument } from "@/generated/graphql";
+import { wsUrl } from "@/lib/graphql/client";
 
 export const useRoomConnection = (onMessage: (msg: any) => void) => {
   const { activeRoom } = useRoomStore();
@@ -12,7 +13,7 @@ export const useRoomConnection = (onMessage: (msg: any) => void) => {
     if (!activeRoom) return;
 
     const client: Client = createClient({
-      url: `ws://localhost:8080/graphql?room/${activeRoom.id}`,
+      url: `${wsUrl}?room/${activeRoom.id}`,
       connectionParams: {
         headers: {
           Authorization: `Bearer ${token}`,

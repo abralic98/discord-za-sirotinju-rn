@@ -4,6 +4,7 @@ import { getFromStorage } from "../secure-storage/storage";
 import { StorageKeys } from "../secure-storage/storageKeys";
 
 export const apiUrl = "http://localhost:8080/graphql";
+export const wsUrl = "ws://localhost:8080/graphql";
 
 export const requestWithAuth = async <T>(
   query: string,

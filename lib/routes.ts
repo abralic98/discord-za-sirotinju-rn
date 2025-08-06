@@ -16,10 +16,11 @@ const routes = {
   biometricSettings: `${settings}/expanded-settings/biometrics` as const,
   discover: `/discover` as const,
   serverSettings: `${tabs}/dashboard/server-settings` as const,
-  dm: `/dm` as const,
+  messaging: `${tabs}/messaging` as const,
+  dm: `${tabs}/messaging/dm/` as const,
   room: `${tabs}/dashboard/room`,
   serverUsers: `${tabs}/dashboard/room/users`,
-  roomSearch: `${tabs}/dashboard/room/search`
+  roomSearch: `${tabs}/dashboard/room/search`,
 } as const;
 
 export default routes;

@@ -5,6 +5,7 @@ import { Tabs } from "expo-router";
 import {
   GlobeIcon,
   LayoutDashboardIcon,
+  MessageCircleIcon,
   SettingsIcon,
 } from "lucide-nativewind";
 
@@ -52,6 +53,17 @@ export default function TabLayout() {
           title: "Discovery",
           tabBarIcon: ({ color }) => (
             <GlobeIcon className={cn("w-7 h-7", getColorClass(color))} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="messaging"
+        options={{
+          title: "Messaging",
+          tabBarIcon: ({ color }) => (
+            <MessageCircleIcon
+              className={cn("w-7 h-7", getColorClass(color))}
+            />
           ),
         }}
       />

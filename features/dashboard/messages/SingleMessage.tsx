@@ -1,5 +1,5 @@
 import { UserAvatar } from "@/components/UserAvatar";
-import { Message } from "@/generated/graphql";
+import { DirectMessage, Message } from "@/generated/graphql";
 import { formatDate, formatWSDate } from "@/helpers/Date";
 import { TextMd } from "@/lib/typography";
 import { cn } from "@/lib/utils";
@@ -8,7 +8,7 @@ import React, { useState } from "react";
 import { View } from "react-native";
 
 interface Props {
-  message: Message | null;
+  message: Message | DirectMessage | null;
 }
 
 export const SingleMessage = ({ message }: Props) => {

@@ -25,7 +25,7 @@ export const UserAvatar = ({ user, withPresence, className, presenceClassName }:
       );
     } else {
       return (
-        <View className="w-full h-full rounded-full bg-dark-active-server items-center justify-center">
+        <View className="w-full h-full rounded-full bg-dark-server items-center justify-center">
           <UserIcon className="text-white" />
         </View>
       );

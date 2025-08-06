@@ -1,0 +1,73 @@
+query getMyInbox {
+  getMyInbox {
+    id
+    users {
+      id
+      username
+      avatar
+    }
+    lastMessage {
+      id
+      text
+      imageUrl
+      dateCreated
+      author {
+        id
+        username
+        avatar
+      }
+    }
+  }
+}
+
+query getDirectMessagesByInboxId(
+  $id: ID!
+  $page: Int!
+  $size: Int!
+  $search: String
+) {
+  getDirectMessagesByInboxId(
+    id: $id
+    page: $page
+    size: $size
+    search: $search
+  ) {
+    totalPages
+    totalElements
+    number
+    size
+    content {
+      id
+      text
+      author {
+        id
+        avatar
+        username
+      }
+      type
+      dateCreated
+      imageUrl
+    }
+  }
+}
+
+subscription subscribeToMessagesByInboxId($inboxId: ID!) {
+  subscribeToMessagesByInboxId(inboxId: $inboxId) {
+    id
+    text
+    author {
+      id
+      avatar
+      username
+    }
+    type
+    dateCreated
+    imageUrl
+  }
+}
+
+mutation createDirectMessage($message: CreateDMInput) {
+  createDirectMessage(message: $message) {
+    id
+  }
+}

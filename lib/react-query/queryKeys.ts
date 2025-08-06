@@ -3,9 +3,11 @@ export const queryKeys = {
   getAllUserServers: "getAllUserServers",
   getRoomsByServerId: "getRoomsByServerId",
   getAllServers: "getAllServers",
-  getMessagesByRoomId: "getMessagesByRoomId", 
-  getSearchedMessagesByRoomId: "getSearchedMessagesByRoomId", 
+  getMessagesByRoomId: "getMessagesByRoomId",
+  getSearchedMessagesByRoomId: "getSearchedMessagesByRoomId",
   getServerUsers: "getServerUsers",
   getServerById: "getServerById",
-  getBannedUsersByServerId: "getBannedUsersByServerId"
+  getBannedUsersByServerId: "getBannedUsersByServerId",
+  getMyInbox: "getMyInbox",
+  getDirectMessagesByInboxId: "getDirectMessagesByInboxId",
 };

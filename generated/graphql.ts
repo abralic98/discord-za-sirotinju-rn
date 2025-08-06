@@ -117,6 +117,7 @@ export type Inbox = {
   dateCreated?: Maybe<Scalars['String']['output']>;
   dateUpdated?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['ID']['output']>;
+  lastMessage?: Maybe<DirectMessage>;
   messages?: Maybe<Array<Maybe<DirectMessage>>>;
   users?: Maybe<Array<Maybe<User>>>;
 };
@@ -640,6 +641,35 @@ export type JoinServerMutationVariables = Exact<{
 
 
 export type JoinServerMutation = { __typename?: 'Mutation', joinServer?: { __typename?: 'Server', id?: string | null, serverImg?: string | null, name?: string | null } | null };
+
+export type GetMyInboxQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetMyInboxQuery = { __typename?: 'Query', getMyInbox?: Array<{ __typename?: 'Inbox', id?: string | null, users?: Array<{ __typename?: 'User', id?: string | null, username?: string | null, avatar?: string | null } | null> | null, lastMessage?: { __typename?: 'DirectMessage', id?: string | null, text?: string | null, imageUrl?: string | null, dateCreated?: string | null, author?: { __typename?: 'User', id?: string | null, username?: string | null, avatar?: string | null } | null } | null } | null> | null };
+
+export type GetDirectMessagesByInboxIdQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+  page: Scalars['Int']['input'];
+  size: Scalars['Int']['input'];
+  search?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type GetDirectMessagesByInboxIdQuery = { __typename?: 'Query', getDirectMessagesByInboxId: { __typename?: 'DirectMessagePage', totalPages: number, totalElements: number, number: number, size: number, content: Array<{ __typename?: 'DirectMessage', id?: string | null, text?: string | null, type?: MessageType | null, dateCreated?: string | null, imageUrl?: string | null, author?: { __typename?: 'User', id?: string | null, avatar?: string | null, username?: string | null } | null }> } };
+
+export type SubscribeToMessagesByInboxIdSubscriptionVariables = Exact<{
+  inboxId: Scalars['ID']['input'];
+}>;
+
+
+export type SubscribeToMessagesByInboxIdSubscription = { __typename?: 'Subscription', subscribeToMessagesByInboxId?: { __typename?: 'DirectMessage', id?: string | null, text?: string | null, type?: MessageType | null, dateCreated?: string | null, imageUrl?: string | null, author?: { __typename?: 'User', id?: string | null, avatar?: string | null, username?: string | null } | null } | null };
+
+export type CreateDirectMessageMutationVariables = Exact<{
+  message?: InputMaybe<CreateDmInput>;
+}>;
+
+
+export type CreateDirectMessageMutation = { __typename?: 'Mutation', createDirectMessage?: { __typename?: 'DirectMessage', id?: string | null } | null };
 
 export type UpdateUserMutationVariables = Exact<{
   user?: InputMaybe<UpdateUserInput>;
@@ -1225,6 +1255,121 @@ export const useJoinServerMutation = <
     return useMutation<JoinServerMutation, TError, JoinServerMutationVariables, TContext>(
       ['joinServer'],
       (variables?: JoinServerMutationVariables) => fetcher<JoinServerMutation, JoinServerMutationVariables>(dataSource.endpoint, dataSource.fetchParams || {}, JoinServerDocument, variables)(),
+      options
+    )};
+
+export const GetMyInboxDocument = `
+    query getMyInbox {
+  getMyInbox {
+    id
+    users {
+      id
+      username
+      avatar
+    }
+    lastMessage {
+      id
+      text
+      imageUrl
+      dateCreated
+      author {
+        id
+        username
+        avatar
+      }
+    }
+  }
+}
+    `;
+
+export const useGetMyInboxQuery = <
+      TData = GetMyInboxQuery,
+      TError = unknown
+    >(
+      dataSource: { endpoint: string, fetchParams?: RequestInit },
+      variables?: GetMyInboxQueryVariables,
+      options?: UseQueryOptions<GetMyInboxQuery, TError, TData>
+    ) => {
+    
+    return useQuery<GetMyInboxQuery, TError, TData>(
+      variables === undefined ? ['getMyInbox'] : ['getMyInbox', variables],
+      fetcher<GetMyInboxQuery, GetMyInboxQueryVariables>(dataSource.endpoint, dataSource.fetchParams || {}, GetMyInboxDocument, variables),
+      options
+    )};
+
+export const GetDirectMessagesByInboxIdDocument = `
+    query getDirectMessagesByInboxId($id: ID!, $page: Int!, $size: Int!, $search: String) {
+  getDirectMessagesByInboxId(id: $id, page: $page, size: $size, search: $search) {
+    totalPages
+    totalElements
+    number
+    size
+    content {
+      id
+      text
+      author {
+        id
+        avatar
+        username
+      }
+      type
+      dateCreated
+      imageUrl
+    }
+  }
+}
+    `;
+
+export const useGetDirectMessagesByInboxIdQuery = <
+      TData = GetDirectMessagesByInboxIdQuery,
+      TError = unknown
+    >(
+      dataSource: { endpoint: string, fetchParams?: RequestInit },
+      variables: GetDirectMessagesByInboxIdQueryVariables,
+      options?: UseQueryOptions<GetDirectMessagesByInboxIdQuery, TError, TData>
+    ) => {
+    
+    return useQuery<GetDirectMessagesByInboxIdQuery, TError, TData>(
+      ['getDirectMessagesByInboxId', variables],
+      fetcher<GetDirectMessagesByInboxIdQuery, GetDirectMessagesByInboxIdQueryVariables>(dataSource.endpoint, dataSource.fetchParams || {}, GetDirectMessagesByInboxIdDocument, variables),
+      options
+    )};
+
+export const SubscribeToMessagesByInboxIdDocument = `
+    subscription subscribeToMessagesByInboxId($inboxId: ID!) {
+  subscribeToMessagesByInboxId(inboxId: $inboxId) {
+    id
+    text
+    author {
+      id
+      avatar
+      username
+    }
+    type
+    dateCreated
+    imageUrl
+  }
+}
+    `;
+export const CreateDirectMessageDocument = `
+    mutation createDirectMessage($message: CreateDMInput) {
+  createDirectMessage(message: $message) {
+    id
+  }
+}
+    `;
+
+export const useCreateDirectMessageMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      dataSource: { endpoint: string, fetchParams?: RequestInit },
+      options?: UseMutationOptions<CreateDirectMessageMutation, TError, CreateDirectMessageMutationVariables, TContext>
+    ) => {
+    
+    return useMutation<CreateDirectMessageMutation, TError, CreateDirectMessageMutationVariables, TContext>(
+      ['createDirectMessage'],
+      (variables?: CreateDirectMessageMutationVariables) => fetcher<CreateDirectMessageMutation, CreateDirectMessageMutationVariables>(dataSource.endpoint, dataSource.fetchParams || {}, CreateDirectMessageDocument, variables)(),
       options
     )};
 
