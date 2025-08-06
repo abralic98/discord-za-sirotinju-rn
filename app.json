@@ -64,7 +64,6 @@
           "faceIDPermission": "Allow $(PRODUCT_NAME) to use Face ID."
         }
       ],
-      "@react-native-firebase/app",
       [
         "expo-build-properties",
         {

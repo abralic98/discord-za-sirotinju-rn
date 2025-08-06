@@ -12,7 +12,7 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { useFirebase } from "@/hooks/useFirebase";
 
 export default function RootLayout() {
-  useFirebase()
+  useFirebase();
   return (
     <QueryClientProvider client={queryClient}>
       <GestureHandlerRootView style={{ flex: 1, backgroundColor: "gray" }}>
