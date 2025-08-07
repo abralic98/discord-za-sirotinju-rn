@@ -77,6 +77,7 @@ export type CreateServerInput = {
 };
 
 export type CreateSessionInput = {
+  firebaseToken?: InputMaybe<Scalars['String']['input']>;
   password: Scalars['String']['input'];
   username: Scalars['String']['input'];
 };

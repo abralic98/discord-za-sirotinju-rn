@@ -11,7 +11,7 @@ import { handleGraphqlError } from "@/helpers/GraphqlCatchError";
 import { showSuccess } from "@/helpers/Toast";
 import { publicClient } from "@/lib/graphql/client";
 import routes from "@/lib/routes";
-import { saveToStorage } from "@/lib/secure-storage/storage";
+import { getFromStorage, saveToStorage } from "@/lib/secure-storage/storage";
 import { StorageKeys } from "@/lib/secure-storage/storageKeys";
 import { TextSm } from "@/lib/typography";
 import { useMutation } from "@tanstack/react-query";
@@ -30,9 +30,19 @@ export const LoginForm = () => {
   const { replace } = useRouter();
   const { setAuth } = useAuthStore();
 
+  const getFirebaseToken = async () => {
+    return await getFromStorage(StorageKeys.FCMTOKEN);
+  };
+
   const createSessionMutation = useMutation({
     mutationFn: async (data: CreateSessionInput) => {
-      const modifiedData: MutationCreateSessionArgs = { credentials: data };
+      const token = await getFirebaseToken();
+      const modifiedData: MutationCreateSessionArgs = {
+        credentials: {
+          ...data,
+          firebaseToken: token,
+        },
+      };
       return publicClient.request<CreateSessionMutation>(
         CreateSessionDocument,
         modifiedData,

@@ -1,13 +1,17 @@
-import { firebaseConfig } from "@/lib/firebase/firebaseConfig";
-import { initializeApp } from "firebase/app";
-import messaging from "@react-native-firebase/messaging";
 import { useEffect } from "react";
+import messaging from "@react-native-firebase/messaging";
 import { PermissionsAndroid, Platform } from "react-native";
+import { showSuccess } from "@/helpers/Toast";
 import { saveToStorage } from "@/lib/secure-storage/storage";
 import { StorageKeys } from "@/lib/secure-storage/storageKeys";
 
 export const useFirebase = () => {
-  const app = initializeApp(firebaseConfig);
+  useEffect(() => {
+    requestUserPermission();
+    messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+      console.log("Message handled in the background!", remoteMessage);
+    });
+  }, []);
 
   async function requestUserPermission() {
     if (Platform.OS === "android") {
@@ -23,7 +27,7 @@ export const useFirebase = () => {
 
     if (enabled) {
       console.log("Authorization status:", authStatus);
-      getFcmToken(); 
+      getFcmToken();
     }
   }
 
@@ -31,7 +35,7 @@ export const useFirebase = () => {
     try {
       const token = await messaging().getToken();
       if (token) {
-        saveToStorage(StorageKeys.FCMTOKEN, token)
+        saveToStorage(StorageKeys.FCMTOKEN, token);
         console.log("FCM Token:", token);
       } else {
         console.log("Failed to get FCM token");
@@ -40,12 +44,4 @@ export const useFirebase = () => {
       console.log("Error getting FCM token:", error);
     }
   }
-
-  messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-    console.log("Message handled in the background!", remoteMessage);
-  });
-
-  useEffect(() => {
-    requestUserPermission();
-  }, []);
 };
