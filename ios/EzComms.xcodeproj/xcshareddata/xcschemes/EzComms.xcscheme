@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "discordzasirotinjurn.app"
-               BlueprintName = "discordzasirotinjurn"
-               ReferencedContainer = "container:discordzasirotinjurn.xcodeproj">
+               BuildableName = "EzComms.app"
+               BlueprintName = "EzComms"
+               ReferencedContainer = "container:EzComms.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "discordzasirotinjurnTests.xctest"
-               BlueprintName = "discordzasirotinjurnTests"
-               ReferencedContainer = "container:discordzasirotinjurn.xcodeproj">
+               BuildableName = "EzCommsTests.xctest"
+               BlueprintName = "EzCommsTests"
+               ReferencedContainer = "container:EzComms.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "discordzasirotinjurn.app"
-            BlueprintName = "discordzasirotinjurn"
-            ReferencedContainer = "container:discordzasirotinjurn.xcodeproj">
+            BuildableName = "EzComms.app"
+            BlueprintName = "EzComms"
+            ReferencedContainer = "container:EzComms.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "discordzasirotinjurn.app"
-            BlueprintName = "discordzasirotinjurn"
-            ReferencedContainer = "container:discordzasirotinjurn.xcodeproj">
+            BuildableName = "EzComms.app"
+            BlueprintName = "EzComms"
+            ReferencedContainer = "container:EzComms.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

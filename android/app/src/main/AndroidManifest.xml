@@ -28,7 +28,7 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="discordzasirotinjurn"/>
-        <data android:scheme="exp+discord-za-sirotinju-rn"/>
+        <data android:scheme="exp+ezcomms"/>
       </intent-filter>
     </activity>
   </application>

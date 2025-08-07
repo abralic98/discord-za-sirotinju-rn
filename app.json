@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "discord-za-sirotinju-rn",
-    "slug": "discord-za-sirotinju-rn",
-    "version": "1.0.0",
+    "name": "EzComms",
+    "slug": "ezcomms",
+    "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/appimage.png",
     "scheme": "discordzasirotinjurn",
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
@@ -21,8 +21,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/appimage.png",
+        "backgroundColor": "#191a1d"
       },
       "edgeToEdgeEnabled": true,
       "package": "com.abralic98.diskordzasirotinju",
@@ -41,6 +41,7 @@
     "plugins": [
       "expo-router",
       "@react-native-firebase/app",
+      "./withNotifeeAndroidFix",
       [
         "expo-splash-screen",
         {

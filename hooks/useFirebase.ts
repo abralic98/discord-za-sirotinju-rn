@@ -1,16 +1,75 @@
 import { useEffect } from "react";
-import messaging from "@react-native-firebase/messaging";
-import { PermissionsAndroid, Platform } from "react-native";
+import messaging, {
+  FirebaseMessagingTypes,
+} from "@react-native-firebase/messaging";
+import { PermissionsAndroid, Platform, Alert } from "react-native";
 import { saveToStorage } from "@/lib/secure-storage/storage";
 import { StorageKeys } from "@/lib/secure-storage/storageKeys";
+import notifee, {
+  AndroidStyle,
+  NotificationAndroid,
+} from "@notifee/react-native";
 
 export const useFirebase = () => {
   useEffect(() => {
     requestUserPermission();
-    messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-      console.log("Message handled in the background!", remoteMessage);
+
+    //bg
+    messaging().setBackgroundMessageHandler(async (remoteMessage) => {});
+
+    //foregrond
+    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+      const title = remoteMessage.notification?.title ?? "New Message";
+      const body =
+        remoteMessage.notification?.body ?? "You have a new notification.";
+      onDisplayNotification(remoteMessage);
     });
+
+    return unsubscribe;
   }, []);
+
+  async function onDisplayNotification(
+    remoteMessage: FirebaseMessagingTypes.RemoteMessage,
+  ) {
+    await notifee.requestPermission();
+
+    const data = remoteMessage.data || {};
+    const title =
+      remoteMessage.notification?.title ?? data.title ?? "New Message";
+    const body =
+      remoteMessage.notification?.body ??
+      data.body ??
+      "You have a new notification.";
+
+    const authorAvatar = data.authorAvatar || undefined;
+    const messageImage = data.messageImage || undefined;
+
+    const channelId = await notifee.createChannel({
+      id: "default",
+      name: "Default Channel",
+    });
+
+    const androidOptions: NotificationAndroid = {
+      channelId,
+      smallIcon: "ic_launcher",
+      pressAction: {
+        id: "default",
+      },
+      ...(authorAvatar && { largeIcon: authorAvatar }),
+      ...(messageImage && {
+        style: {
+          type: AndroidStyle.BIGPICTURE,
+          picture: messageImage,
+        },
+      }),
+    };
+
+    await notifee.displayNotification({
+      title: String(title),
+      body: String(body),
+      android: androidOptions,
+    });
+  }
 
   async function requestUserPermission() {
     if (Platform.OS === "android") {
@@ -25,7 +84,6 @@ export const useFirebase = () => {
       authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
     if (enabled) {
-      console.log("Authorization status:", authStatus);
       getFcmToken();
     }
   }
@@ -35,12 +93,8 @@ export const useFirebase = () => {
       const token = await messaging().getToken();
       if (token) {
         saveToStorage(StorageKeys.FCMTOKEN, token);
-        console.log("FCM Token:", token);
-      } else {
-        console.log("Failed to get FCM token");
+        console.log("📱 FCM Token:", token);
       }
-    } catch (error) {
-      console.log("Error getting FCM token:", error);
-    }
+    } catch {}
   }
 };
