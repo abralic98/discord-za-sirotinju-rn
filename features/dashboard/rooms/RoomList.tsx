@@ -11,12 +11,12 @@ import { requestWithAuth } from "@/lib/graphql/client";
 import { handleGraphqlError } from "@/helpers/GraphqlCatchError";
 import { TextLg, TextXl3 } from "@/lib/typography";
 import { SingleRoom } from "./SingleRoom";
-import { SingleVoiceRoom } from "./SingleVoiceRoom";
 import { CreateRoom } from "./CreateRoom";
 import { SettingsIcon } from "lucide-nativewind";
 import { useAuthStore } from "@/features/auth/store";
 import routes from "@/lib/routes";
 import { useRouter } from "expo-router";
+import { SingleVoiceRoom } from "./voice/SingleVoiceRoom";
 
 export const RoomList = () => {
   const { activeServer } = useRoomStore();

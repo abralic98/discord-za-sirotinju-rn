@@ -3,12 +3,17 @@ import { GraphqlCatchError } from "@/helpers/GraphqlCatchError";
 import { getFromStorage } from "../secure-storage/storage";
 import { StorageKeys } from "../secure-storage/storageKeys";
 
-// export const apiUrl = "http://localhost:8080/graphql";
-export const apiUrl = "http://192.168.0.26:8080/graphql";
+const prod = "https://ezcomms.linkpc.net/graphql";
+const prodw = "wss://ezcomms.linkpc.net/graphql";
+// export const apiUrl = prod;
+// export const wsUrl = prodw;
+export const apiUrl = "http://192.168.1.93:8080/graphql";
 
+//ipconfig getifaddr en0
 // export const wsUrl = "ws://localhost:8080/graphql";
-export const wsUrl = "ws://192.168.0.26:8080/graphql";
-
+export const wsUrl = "ws://192.168.1.93:8080/graphql";
+export const voiceUrl = "ws://192.168.1.93:8080/ws/voice";
+// export const voiceUrl = "wss://ezcomms.linkpc.net/ws/voice";
 
 export const requestWithAuth = async <T>(
   query: string,

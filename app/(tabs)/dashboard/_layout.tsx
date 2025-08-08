@@ -8,6 +8,6 @@ export default function DashboardLayout() {
         gestureEnabled: true,
         animation: "slide_from_right",
       }}
-    />
+    ></Stack>
   );
 }

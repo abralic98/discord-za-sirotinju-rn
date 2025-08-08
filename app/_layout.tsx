@@ -10,25 +10,30 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { useFirebase } from "@/hooks/useFirebase";
+import { PortalHost, PortalProvider } from "@gorhom/portal";
 
 export default function RootLayout() {
   useFirebase();
   return (
     <QueryClientProvider client={queryClient}>
       <GestureHandlerRootView style={{ flex: 1, backgroundColor: "gray" }}>
-        <BottomSheetModalProvider>
-          <SafeAreaProvider>
-            <ThemeProvider value={DarkTheme}>
-              <Stack
-                screenOptions={{
-                  headerShown: false,
-                  animation: "fade",
-                }}
-              />
-              <Toast />
-            </ThemeProvider>
-          </SafeAreaProvider>
-        </BottomSheetModalProvider>
+        <PortalProvider>
+          <BottomSheetModalProvider>
+            <SafeAreaProvider>
+              <ThemeProvider value={DarkTheme}>
+                <Stack
+                  screenOptions={{
+                    headerShown: false,
+                    animation: "fade",
+                  }}
+                />
+                <Toast />
+                <PortalHost name="VoiceRoom" />
+                <PortalHost name="VoiceController" />
+              </ThemeProvider>
+            </SafeAreaProvider>
+          </BottomSheetModalProvider>
+        </PortalProvider>
       </GestureHandlerRootView>
     </QueryClientProvider>
   );
