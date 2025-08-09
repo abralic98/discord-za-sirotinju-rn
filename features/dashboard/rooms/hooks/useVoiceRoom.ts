@@ -1,119 +1,185 @@
 import { useAuthStore } from "@/features/auth/store";
+import { SocketUserDto } from "@/generated/graphql";
 import { voiceUrl } from "@/lib/graphql/client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import {
+  mediaDevices,
+  RTCIceCandidate,
   RTCPeerConnection,
   RTCSessionDescription,
-  RTCIceCandidate,
-  mediaDevices,
   MediaStream,
 } from "react-native-webrtc";
-
-import { useAudioPlayer } from "expo-audio";
 import { useRoomStore } from "../store";
+import { useAudioPlayer } from "expo-audio";
 
 interface SignalData {
-  type: string;
-  room: string;
-  sender?: { id: string; username?: string };
+  type:
+    | "joinServer"
+    | "joinRoom"
+    | "leaveRoom"
+    | "offer"
+    | "answer"
+    | "candidate"
+    | "getPresence"
+    | "serverPresence";
+  server?: string;
+  userId?: number;
+  room?: string;
   sdp?: any;
   candidate?: any;
-  users?: any;
+  rooms?: {
+    roomId: string;
+    users: SocketUserDto[];
+  }[];
+  targetUserId?: number; // for signaling target peer
 }
 
-const joinAudioSource = require("@/assets/sound/join-room.mp3");
-const leaveAudioSource = require("@/assets/sound/leave-room.mp3");
+const rtcConfig: RTCConfiguration = {
+  iceServers: [
+    { urls: "stun:stun.l.google.com:19302" },
+    // Add TURN servers here if needed
+  ],
+};
 
-export function useVoiceRoom() {
-  const { setUsersInRoom } = useRoomStore();
-  const joinAudio = useAudioPlayer(joinAudioSource);
-  const leaveAudio = useAudioPlayer(leaveAudioSource);
+const joinRoomAudioSource = require("@/assets/sound/join-room.mp3");
+const leaveRoomAudioSource = require("@/assets/sound/leave-room.mp3");
+
+export function useVoiceRoom(serverId: string) {
   const ws = useRef<WebSocket | null>(null);
-  const localStream = useRef<MediaStream | null>(null);
-  const [isInVoiceRoom, setIsInVoiceRoom] = useState(false);
-  const [currentRoom, setCurrentRoom] = useState<string | null>(null);
-
-  // For simplicity, let's assume mesh: peers keyed by userId
-  const peers = useRef<Map<string, RTCPeerConnection>>(new Map());
-
+  const joinAudio = useAudioPlayer(joinRoomAudioSource);
+  const leaveAudio = useAudioPlayer(leaveRoomAudioSource);
   const { user } = useAuthStore();
+  const { setUsersInRoom } = useRoomStore();
+  const [userInVoiceRoom, setUserInVoiceRoom] = useState(false);
 
-  // Create peer connection config (STUN server example)
-  const pcConfig = {
-    iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
-  };
+  const currentRoomId = useRef<string | null>(null);
+  const peers = useRef<Map<number, RTCPeerConnection>>(new Map());
+  const localStream = useRef<MediaStream | null>(null);
 
-  // Open WebSocket and set up handlers
-  const connectWebSocket = (roomId: string) => {
+  const sendSignal = useCallback((data: SignalData) => {
+    if (ws.current?.readyState === WebSocket.OPEN) {
+      ws.current.send(JSON.stringify(data));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!user?.id || !serverId) return;
+
     ws.current = new WebSocket(voiceUrl);
 
     ws.current.onopen = () => {
       console.log("WebSocket connected");
-      // Join the room on server
+
       sendSignal({
-        type: "join",
-        room: roomId,
-        sender: { id: String(user?.id) },
+        type: "joinServer",
+        server: serverId,
+        userId: Number(user.id),
       });
+
+      sendSignal({ type: "getPresence" });
     };
 
-    ws.current.onmessage = async (message) => {
-      const data: SignalData = JSON.parse(message.data);
-
-      if (!data.type) return;
+    ws.current.onmessage = async (event) => {
+      const data: SignalData = JSON.parse(event.data);
 
       switch (data.type) {
-        case "offer":
-          await handleOffer(data);
-          break;
-        case "answer":
-          await handleAnswer(data);
-          break;
-        case "candidate":
-          await handleCandidate(data);
-          break;
-        case "presence":
-          const { room, users } = data;
-          if (room && Array.isArray(users)) {
-            setUsersInRoom(room, users);
+        case "serverPresence":
+          if (data.rooms) {
+            // Create a new object to track all rooms
+            const updatedRoomUsers: Record<string, SocketUserDto[]> = {};
+
+            // Process each room from the presence data
+            data.rooms.forEach(({ roomId, users }) => {
+              updatedRoomUsers[roomId] = users;
+            });
+
+            // Also handle the case where rooms might be empty now
+            // If currentRoomId exists but isn't in the presence data, set it to empty
+            if (
+              currentRoomId.current &&
+              !data.rooms.some((room) => room.roomId === currentRoomId.current)
+            ) {
+              updatedRoomUsers[currentRoomId.current] = [];
+            }
+
+            // Update all rooms at once
+            Object.entries(updatedRoomUsers).forEach(([roomId, users]) => {
+              setUsersInRoom(roomId, users);
+            });
           }
           break;
+
+        case "answer": {
+          const fromUserId = data.userId;
+          if (!fromUserId || !data.sdp) break;
+          console.log(`Received answer from user ${fromUserId}`);
+
+          const pc = peers.current.get(fromUserId);
+          if (!pc) break;
+
+          await pc.setRemoteDescription(new RTCSessionDescription(data.sdp));
+          break;
+        }
+
+        case "candidate": {
+          const fromUserId = data.userId;
+          if (!fromUserId || !data.candidate) break;
+
+          const pc = peers.current.get(fromUserId);
+          if (!pc) break;
+
+          try {
+            await pc.addIceCandidate(new RTCIceCandidate(data.candidate));
+          } catch (e) {
+            console.warn("Error adding received ICE candidate", e);
+          }
+          break;
+        }
       }
     };
 
     ws.current.onclose = () => {
       console.log("WebSocket disconnected");
-      cleanup();
+      cleanupAllPeers();
     };
 
-    ws.current.onerror = (e) => {
-      console.error("WebSocket error", e);
-      cleanup();
+    ws.current.onerror = (err) => {
+      console.error("WebSocket error:", err);
+      cleanupAllPeers();
     };
-  };
 
-  // Send message helper
-  const sendSignal = (data: SignalData) => {
-    if (ws.current && ws.current.readyState === WebSocket.OPEN) {
-      ws.current.send(JSON.stringify(data));
-    }
-  };
+    // Cleanup on unmount
+    return () => {
+      leaveRoom();
+      ws.current?.close();
+    };
+  }, [serverId, user?.id, sendSignal, setUsersInRoom]);
 
-  // Get local audio stream (mic)
-  const getLocalStream = async (): Promise<MediaStream> => {
-    if (localStream.current) return localStream.current;
+  function cleanupAllPeers() {
+    peers.current.forEach((pc) => pc.close());
+    peers.current.clear();
 
-    const stream = await mediaDevices.getUserMedia({
-      audio: true,
-      video: false,
-    });
-    localStream.current = stream;
-    return stream;
-  };
+    localStream.current?.getTracks().forEach((track) => track.stop());
+    localStream.current = null;
+  }
 
-  // Create and add peer connection for given remote user ID
-  const createPeerConnection = (remoteUserId: string): RTCPeerConnection => {
-    const pc = new RTCPeerConnection(pcConfig);
+  function createPeerConnection(peerUserId: number) {
+    const pc = new RTCPeerConnection(rtcConfig);
+
+    pc.onicecandidate = (event) => {
+      if (event.candidate) {
+        sendSignal({
+          type: "candidate",
+          candidate: event.candidate,
+          targetUserId: peerUserId,
+        });
+      }
+    };
+
+    pc.ontrack = (event) => {
+      // Handle remote audio stream here, e.g. add to Audio element or React state
+      console.log("Received remote track", event.streams[0]);
+    };
 
     // Add local stream tracks to peer connection
     if (localStream.current) {
@@ -122,144 +188,63 @@ export function useVoiceRoom() {
       });
     }
 
-    pc.onicecandidate = (event) => {
-      if (event.candidate) {
-        sendSignal({
-          type: "candidate",
-          room: currentRoom!,
-          sender: { id: String(user?.id) },
-          candidate: event.candidate,
-        });
-      }
-    };
-
-    pc.ontrack = (event) => {
-      // Here you receive remote audio stream tracks
-      // You might want to play them via expo-audio or react-native-webrtc's RTCView (audio only)
-      console.log("Received remote track", event.streams[0]);
-    };
-
-    pc.oniceconnectionstatechange = () => {
-      if (
-        pc.connectionState === "disconnected" ||
-        pc.connectionState === "failed"
-      ) {
-        // Cleanup peer connection on failure or disconnect
-        pc.close();
-        peers.current.delete(remoteUserId);
-      }
-    };
-
-    peers.current.set(remoteUserId, pc);
     return pc;
-  };
+  }
 
-  // Handle offer from remote peer
-  const handleOffer = async (data: SignalData) => {
-    const remoteUserId = data.sender?.id;
-    if (!remoteUserId) return;
+  async function joinRoom(roomId: string) {
+    if (!ws.current || ws.current.readyState !== WebSocket.OPEN || !user?.id)
+      return;
 
-    const pc = createPeerConnection(remoteUserId);
-    await pc.setRemoteDescription(new RTCSessionDescription(data.sdp));
-    const answer = await pc.createAnswer();
-    await pc.setLocalDescription(answer);
+    if (currentRoomId.current === roomId) return; // Already in this room
 
+    // Leave old room if any
+    await leaveRoom();
+
+    // Get user media (audio only)
+    localStream.current = await mediaDevices.getUserMedia({ audio: true });
+    setUserInVoiceRoom(true);
+
+    // Join new room
     sendSignal({
-      type: "answer",
-      room: currentRoom!,
-      sender: { id: String(user?.id) },
-      sdp: pc.localDescription,
+      type: "joinRoom",
+      room: roomId,
+      userId: Number(user.id),
+      server: serverId,
     });
-  };
 
-  // Handle answer from remote peer
-  const handleAnswer = async (data: SignalData) => {
-    const remoteUserId = data.sender?.id;
-    if (!remoteUserId) return;
-
-    const pc = peers.current.get(remoteUserId);
-    if (!pc) return;
-
-    await pc.setRemoteDescription(new RTCSessionDescription(data.sdp));
-  };
-
-  // Handle ICE candidate from remote peer
-  const handleCandidate = async (data: SignalData) => {
-    const remoteUserId = data.sender?.id;
-    if (!remoteUserId) return;
-
-    const pc = peers.current.get(remoteUserId);
-    if (!pc) return;
-
-    if (data.candidate) {
-      try {
-        await pc.addIceCandidate(new RTCIceCandidate(data.candidate));
-      } catch (e) {
-        console.error("Error adding ICE candidate", e);
-      }
-    }
-  };
-
-  // Join voice room
-  const joinRoom = async (roomId: string) => {
-    if (isInVoiceRoom) return;
-
-    await getLocalStream();
-
-    connectWebSocket(roomId);
-    setCurrentRoom(roomId);
-    setIsInVoiceRoom(true);
     joinAudio.seekTo(0);
     joinAudio.play();
-  };
 
-  // Leave room and cleanup connections
-  const leaveRoom = () => {
-    if (ws.current) {
-      ws.current.close();
-      ws.current = null;
-    }
-    peers.current.forEach((pc) => pc.close());
-    peers.current.clear();
+    currentRoomId.current = roomId;
+  }
 
-    if (localStream.current) {
-      localStream.current.getTracks().forEach((track) => track.stop());
-      localStream.current = null;
-    }
+  async function leaveRoom() {
+    if (!ws.current || ws.current.readyState !== WebSocket.OPEN || !user?.id)
+      return;
 
-    setCurrentRoom(null);
-    setIsInVoiceRoom(false);
-    // leaveAudio.seekTo(0);
-    // leaveAudio.play();
-  };
+    if (!currentRoomId.current) return;
 
-  // Cleanup when websocket closes or errors
-  const cleanup = () => {
-    peers.current.forEach((pc) => pc.close());
-    peers.current.clear();
+    sendSignal({
+      type: "leaveRoom",
+      room: currentRoomId.current,
+      userId: Number(user.id),
+      server: serverId,
+    });
 
-    if (localStream.current) {
-      localStream.current.getTracks().forEach((track) => track.stop());
-      localStream.current = null;
-    }
+    // Immediately update local state to reflect leaving
+    setUsersInRoom(currentRoomId.current, []);
+    setUserInVoiceRoom(false);
 
-    setCurrentRoom(null);
-    setIsInVoiceRoom(false);
-
+    currentRoomId.current = null;
     leaveAudio.seekTo(0);
     leaveAudio.play();
-  };
 
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      leaveRoom();
-    };
-  }, []);
+    cleanupAllPeers();
+  }
 
   return {
+    userInVoiceRoom,
     joinRoom,
     leaveRoom,
-    isInVoiceRoom,
   };
 }

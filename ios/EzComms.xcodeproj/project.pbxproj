@@ -22,7 +22,7 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = EzComms/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = EzComms/Info.plist; sourceTree = "<group>"; };
 		1C52F1928B6F241567E04A9E /* Pods_EzComms.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EzComms.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		2C3B22772CA8F30BFD6BA577 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = EzComms/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		2C3B22772CA8F30BFD6BA577 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = EzComms/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		48B387D5A34A460CAE780510 /* GoogleService-Info.plist */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "EzComms/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		834A5FA44B084586D75AFBE4 /* Pods-EzComms.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EzComms.release.xcconfig"; path = "Target Support Files/Pods-EzComms/Pods-EzComms.release.xcconfig"; sourceTree = "<group>"; };
 		906CAB9042E075447CC0D14B /* Pods-EzComms.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EzComms.debug.xcconfig"; path = "Target Support Files/Pods-EzComms/Pods-EzComms.debug.xcconfig"; sourceTree = "<group>"; };
@@ -76,7 +76,6 @@
 				906CAB9042E075447CC0D14B /* Pods-EzComms.debug.xcconfig */,
 				834A5FA44B084586D75AFBE4 /* Pods-EzComms.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -380,6 +379,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = EzComms/EzComms.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YG97WY93P4;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -416,6 +416,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = EzComms/EzComms.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YG97WY93P4;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = EzComms/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
@@ -506,10 +507,7 @@
 				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/usr/lib/swift\"$(inherited)\"";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -576,10 +574,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/usr/lib/swift\"$(inherited)\"";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;

@@ -415,6 +415,13 @@ export type ServerPage = {
   totalPages: Scalars['Int']['output'];
 };
 
+export type SocketUserDto = {
+  __typename?: 'SocketUserDTO';
+  avatar?: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  username: Scalars['String']['output'];
+};
+
 export type Subscription = {
   __typename?: 'Subscription';
   subscribeToMessagesByInboxId?: Maybe<DirectMessage>;

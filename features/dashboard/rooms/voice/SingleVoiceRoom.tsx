@@ -1,22 +1,25 @@
 import React, { useState } from "react";
 import { Pressable, View } from "react-native";
 import { TextLg } from "@/lib/typography";
-import { Room } from "@/generated/graphql";
+import { Room, SocketUserDto, User } from "@/generated/graphql";
 import { Portal } from "@gorhom/portal";
 import { useVoiceRoom } from "../hooks/useVoiceRoom";
 import { VoiceOverlay } from "./VoiceOverlay";
 import { useRoomStore } from "../store";
 import { MinimizedVoiceController } from "./components/MinimizedController";
+import { UserAvatar } from "@/components/UserAvatar";
 
 interface SingleVoiceRoomProps {
   room: Room | null;
 }
 
 export const SingleVoiceRoom: React.FC<SingleVoiceRoomProps> = ({ room }) => {
-  const { setActiveRoom } = useRoomStore();
+  const { setActiveRoom, roomUsers } = useRoomStore();
   const [isConnecting, setIsConnecting] = useState(false);
   const roomId = room?.id || "";
-  const { joinRoom, leaveRoom, isInVoiceRoom } = useVoiceRoom();
+  const { joinRoom, leaveRoom, userInVoiceRoom } = useVoiceRoom(
+    String(room?.server?.id),
+  );
   const [showPortal, setShowPortal] = useState(false);
   const [showMinimizedPortal, setShowMinimizedPortal] = useState(false);
 
@@ -48,10 +51,18 @@ export const SingleVoiceRoom: React.FC<SingleVoiceRoomProps> = ({ room }) => {
     setShowMinimizedPortal(true);
   };
 
+  const getCurrentRoomUsers = () => {
+    return (
+      roomUsers[roomId]?.map((user) => (
+        <UserAvatar key={user?.id} user={user as unknown as User} />
+      )) ?? []
+    );
+  };
+
   return (
     <>
       <Pressable
-        onPress={isInVoiceRoom ? handleLeaveRoom : handleJoinRoom}
+        onPress={userInVoiceRoom ? handleLeaveRoom : handleJoinRoom}
         disabled={isConnecting}
         className="w-full h-16 bg-gray-800 flex flex-row items-center justify-start gap-4 p-4 rounded-lg"
       >
@@ -63,9 +74,10 @@ export const SingleVoiceRoom: React.FC<SingleVoiceRoomProps> = ({ room }) => {
           {room.name}
         </TextLg>
         <TextLg className="text-gray-400">
-          {isConnecting ? "Connecting..." : isInVoiceRoom ? "Leave" : "Join"}
+          {isConnecting ? "Connecting..." : userInVoiceRoom ? "Leave" : "Join"}
         </TextLg>
       </Pressable>
+      <View className="bg-red-500 w-full">{getCurrentRoomUsers()}</View>
       {showPortal && (
         <Portal hostName="VoiceRoom">
           <VoiceOverlay

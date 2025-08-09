@@ -2,7 +2,7 @@ import { UserAvatar } from "@/components/UserAvatar";
 import { useAuthStore } from "@/features/auth/store";
 import { User } from "@/generated/graphql";
 import { TextMd } from "@/lib/typography";
-import { CrownIcon, MailIcon, MessageSquareIcon } from "lucide-nativewind";
+import { CrownIcon, MailIcon } from "lucide-nativewind";
 import React from "react";
 import { View } from "react-native";
 
@@ -12,7 +12,6 @@ interface Props {
 }
 export const SingleUser = ({ user, serverOwnerId }: Props) => {
   const { user: currentUser } = useAuthStore();
-  console.log(currentUser ,'jebeni current');
   if (!user) return null;
   return (
     <View className="flex-row  items-center justify-between">

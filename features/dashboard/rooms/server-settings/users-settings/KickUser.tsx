@@ -49,7 +49,6 @@ export const KickUser = ({ user }: { user?: User | null }) => {
   });
 
   const handleKick = () => {
-    console.log(activeServer, user?.id, "jebeni id");
     if (!activeServer?.id) return;
     if (!user?.id) return;
     kickUserMutation.mutateAsync({

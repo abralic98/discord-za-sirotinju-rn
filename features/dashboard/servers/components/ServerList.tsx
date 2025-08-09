@@ -40,9 +40,8 @@ export const ServerList = () => {
       keyExtractor={(item) => String(item?.id)}
       ItemSeparatorComponent={() => <View className="h-4" />}
       renderItem={({ item }) => {
-        console.log(item?.id, 'item jebeni')
         if (item?.id === "creation") {
-          return <CreateServer/>;
+          return <CreateServer />;
         }
         return <SingleServer server={item} />;
       }}

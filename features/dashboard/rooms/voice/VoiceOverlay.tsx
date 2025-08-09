@@ -21,6 +21,7 @@ export const VoiceOverlay = ({ ...props }: VoiceRoomProps) => {
     }).start();
   }, [fadeAnim]);
 
+  console.log(roomUsers, "roomusers");
   return (
     <SafeAreaView className="bg-dark-server-sidebar h-screen">
       <Animated.View

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import { Room, Server } from "@/generated/graphql";
+import { Room, Server, SocketUserDto } from "@/generated/graphql";
 
 interface RoomStore {
   activeServer: Server | null | undefined;
@@ -9,8 +9,8 @@ interface RoomStore {
   setRooms: (rooms: Room[] | null) => void;
   activeRoom: Room | null | undefined;
   setActiveRoom: (activeRoom: Room | null | undefined) => void;
-  roomUsers: Record<string, string[]>;
-  setUsersInRoom: (roomId: string, userIds: string[]) => void;
+  roomUsers: Record<string, SocketUserDto[]>;
+  setUsersInRoom: (roomId: string, users: SocketUserDto[]) => void;
 }
 
 export const useRoomStore = create<RoomStore>()(
@@ -42,61 +42,5 @@ export const useRoomStore = create<RoomStore>()(
         ),
     }),
     { name: "RoomStore" },
-  ),
-);
-
-import { User } from "@/generated/graphql";
-
-interface VoiceRoomStore {
-  isUserInVoiceRoom: boolean;
-  setIsUserInVoiceRoom: (value: boolean) => void;
-  usersInRoom: Record<string, User[]>;
-  setUsersInRoom: (roomId: string, users: User[]) => void;
-  addUserToRoom: (roomId: string, user: User) => void;
-  removeUserFromRoom: (roomId: string, userId: string) => void;
-}
-
-export const useVoiceRoomStore = create<VoiceRoomStore>()(
-  devtools(
-    (set) => ({
-      isUserInVoiceRoom: false,
-      setIsUserInVoiceRoom: (value) =>
-        set({ isUserInVoiceRoom: value }, false, "setIsUserInVoiceRoom"),
-
-      usersInRoom: {},
-      setUsersInRoom: (roomId, users) =>
-        set(
-          (state) => ({
-            usersInRoom: { ...state.usersInRoom, [roomId]: users },
-          }),
-          false,
-          "setUsersInRoom",
-        ),
-      addUserToRoom: (roomId, user) =>
-        set(
-          (state) => ({
-            usersInRoom: {
-              ...state.usersInRoom,
-              [roomId]: [...(state.usersInRoom[roomId] || []), user],
-            },
-          }),
-          false,
-          "addUserToRoom",
-        ),
-      removeUserFromRoom: (roomId, userId) =>
-        set(
-          (state) => ({
-            usersInRoom: {
-              ...state.usersInRoom,
-              [roomId]: (state.usersInRoom[roomId] || []).filter(
-                (u) => u.id !== userId,
-              ),
-            },
-          }),
-          false,
-          "removeUserFromRoom",
-        ),
-    }),
-    { name: "VoiceRoomStore" },
   ),
 );
